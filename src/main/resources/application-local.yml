@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:~/.h2/fpv-freq;AUTO_SERVER=TRUE
+    username: sa
+    password: sa
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        hbm2ddl.import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+
