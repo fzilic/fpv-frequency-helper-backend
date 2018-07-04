@@ -93,7 +93,7 @@ public class FrequencySelectionServiceImpl implements FrequencySelectionService 
 
     // attempt to locate best one
     final SortedMap<Statistics, List<Pilot>> scored = new TreeMap<>((o1, o2) ->
-        Double.compare(o2.average / o2.stdev, o1.average / o1.stdev));
+        Double.compare(o2.average / (o2.stdev == 0.0 ? 1: o2.stdev), o1.average / (o1.stdev == 0.0 ? 1: o1.stdev)));
 
     valid.forEach(candidate -> {
       final List<Integer> separations = new ArrayList<>(candidate.size() - 1);
