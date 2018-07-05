@@ -75,6 +75,8 @@ public class Band {
   @Column(name = "preselected", columnDefinition = "CHAR(1)", nullable = false)
   @Type(type = "org.hibernate.type.TrueFalseType")
   @ColumnDefault("'F'")
+  @JsonProperty("preselected")
+  @JsonView({Basic.class})
   private Boolean preselected;
 
   @OneToMany(mappedBy = "band", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
