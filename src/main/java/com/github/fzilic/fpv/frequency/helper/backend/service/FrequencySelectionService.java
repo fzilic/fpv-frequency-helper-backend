@@ -7,4 +7,6 @@ public interface FrequencySelectionService {
 
   List<List<Pilot>> recommendChannels(Integer lowerSpacing, Integer upperSpacing, List<Pilot> pilots);
 
+  boolean supportsNumberOfCombinations(Long numberOfCombinations);
+
 }

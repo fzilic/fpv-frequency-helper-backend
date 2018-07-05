@@ -1,7 +1,7 @@
 -- A	5865	5845	5825	5805	5785	5765	5745	5725
 
-INSERT INTO band (id, name, description)
-VALUES (nextval('band_seq'), 'A', 'Boscam A');
+INSERT INTO band (id, name, description, preselected)
+VALUES (nextval('band_seq'), 'A', 'Boscam A', 'T');
 
 INSERT INTO channel (id, number, ordinal, frequency, band_id)
 VALUES (nextval('channel_seq'), 1, 1, 5865, currval('band_seq'));
@@ -22,8 +22,8 @@ VALUES (nextval('channel_seq'), 8, 8, 5725, currval('band_seq'));
 
 -- B	5733	5752	5771	5790	5809	5828	5847	5866
 
-INSERT INTO band (id, name, description)
-VALUES (nextval('band_seq'), 'B', 'Boscam B');
+INSERT INTO band (id, name, description, preselected)
+VALUES (nextval('band_seq'), 'B', 'Boscam B', 'T');
 
 INSERT INTO channel (id, number, ordinal, frequency, band_id)
 VALUES (nextval('channel_seq'), 1, 1, 5733, currval('band_seq'));
@@ -44,8 +44,8 @@ VALUES (nextval('channel_seq'), 8, 8, 5866, currval('band_seq'));
 
 -- E	5705	5685	5665	5645	5885	5905	5925	5945
 
-INSERT INTO band (id, name, description)
-VALUES (nextval('band_seq'), 'E', 'Boscam E');
+INSERT INTO band (id, name, description, preselected)
+VALUES (nextval('band_seq'), 'E', 'Boscam E', 'T');
 
 INSERT INTO channel (id, number, ordinal, frequency, band_id)
 VALUES (nextval('channel_seq'), 1, 1, 5705, currval('band_seq'));
@@ -66,8 +66,8 @@ VALUES (nextval('channel_seq'), 8, 8, 5945, currval('band_seq'));
 
 -- F	5740	5760	5780	5800	5820	5840	5860	5880
 
-INSERT INTO band (id, name, description)
-VALUES (nextval('band_seq'), 'F', 'Fatshark');
+INSERT INTO band (id, name, description, preselected)
+VALUES (nextval('band_seq'), 'F', 'Fatshark', 'T');
 
 INSERT INTO channel (id, number, ordinal, frequency, band_id)
 VALUES (nextval('channel_seq'), 1, 1, 5740, currval('band_seq'));
@@ -88,8 +88,8 @@ VALUES (nextval('channel_seq'), 8, 8, 5880, currval('band_seq'));
 
 -- R	5658	5695	5732	5769	5806	5843	5880	5917
 
-INSERT INTO band (id, name, description)
-VALUES (nextval('band_seq'), 'R', 'Raceband');
+INSERT INTO band (id, name, description, preselected)
+VALUES (nextval('band_seq'), 'R', 'Raceband', 'T');
 
 INSERT INTO channel (id, number, ordinal, frequency, band_id)
 VALUES (nextval('channel_seq'), 1, 1, 5658, currval('band_seq'));

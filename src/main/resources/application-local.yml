@@ -14,5 +14,6 @@ spring:
 logging:
   level:
     root: warn
-    com.github.fzilic.fpv.frequency.helper.backend: debug
+    com.github.fzilic.fpv.frequency.helper.backend: info
+    net.jperf.TimingLogger: info
 

@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public enum ApiResponseStatus {
   SUCCESS(0),
+  TOO_MANY_COMBINATIONS(1000),
   UNKNOWN_ERROR(-9999);
 
   private final Integer code;

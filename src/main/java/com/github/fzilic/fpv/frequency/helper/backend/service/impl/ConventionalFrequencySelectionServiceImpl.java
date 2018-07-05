@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.jperf.aop.Profiled;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
@@ -28,9 +29,10 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class FrequencySelectionServiceImpl implements FrequencySelectionService {
+public class ConventionalFrequencySelectionServiceImpl implements FrequencySelectionService {
 
   @Override
+  @Profiled
   public List<List<Pilot>> recommendChannels(final Integer lowerSpacing, final Integer upperSpacing, final List<Pilot> pilots) {
     if (pilots.size() < 2) {
       throw new IllegalArgumentException();
@@ -93,7 +95,7 @@ public class FrequencySelectionServiceImpl implements FrequencySelectionService 
 
     // attempt to locate best one
     final SortedMap<Statistics, List<Pilot>> scored = new TreeMap<>((o1, o2) ->
-        Double.compare(o2.average / (o2.stdev == 0.0 ? 1: o2.stdev), o1.average / (o1.stdev == 0.0 ? 1: o1.stdev)));
+        Double.compare(o2.average / (o2.stdev == 0.0 ? 1 : o2.stdev), o1.average / (o1.stdev == 0.0 ? 1 : o1.stdev)));
 
     valid.forEach(candidate -> {
       final List<Integer> separations = new ArrayList<>(candidate.size() - 1);
@@ -126,6 +128,11 @@ public class FrequencySelectionServiceImpl implements FrequencySelectionService 
             entry.getValue().sort(Comparator.comparing(Pilot::getOrdinal)))
         .map(Entry::getValue)
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public boolean supportsNumberOfCombinations(final Long numberOfCombinations) {
+    return numberOfCombinations != null && numberOfCombinations > 0 && numberOfCombinations <= Math.round(Math.pow(32, 4));
   }
 
   private boolean isValid(final List<Pilot> combination, final Integer lowerSpacing, final Integer upperSpacing) {

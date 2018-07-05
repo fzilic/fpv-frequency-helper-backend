@@ -29,6 +29,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.ListIndexBase;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 
 @Data
@@ -70,6 +71,11 @@ public class Band {
   @JsonProperty("description")
   @JsonView({Basic.class})
   private String description;
+
+  @Column(name = "preselected", columnDefinition = "CHAR(1)", nullable = false)
+  @Type(type = "org.hibernate.type.TrueFalseType")
+  @ColumnDefault("'F'")
+  private Boolean preselected;
 
   @OneToMany(mappedBy = "band", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
   @OrderColumn(name = "ordinal")

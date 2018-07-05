@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.fail;
     "spring.jpa.properties.hibernate.hbm2ddl.import_files_sql_extractor=org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor"
 })
 @DataJpaTest
-public class FrequencySelectionServiceImplTest {
+public class ConventionalFrequencySelectionServiceImplTest {
 
   @Autowired
   private BandRepository repository;
@@ -41,7 +41,7 @@ public class FrequencySelectionServiceImplTest {
 
   @Before
   public void initService() {
-    service = new FrequencySelectionServiceImpl();
+    service = new ConventionalFrequencySelectionServiceImpl();
   }
 
 
