@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
@@ -137,12 +138,38 @@ public class ConventionalFrequencySelectionServiceImpl implements FrequencySelec
 
   private boolean isValid(final List<Pilot> combination, final Integer lowerSpacing, final Integer upperSpacing) {
     for (int i = 0; i < combination.size() - 1; i++) {
-      final Pilot pilot1 = combination.get(0);
-      final Pilot pilot2 = combination.get(1);
+      final Pilot pilot1 = combination.get(i);
+      final Pilot pilot2 = combination.get(i + 1);
       if (pilot1.getRecommendedChannel().getFrequency() + upperSpacing >= pilot2.getRecommendedChannel().getFrequency() - lowerSpacing) {
         return false;
       }
     }
+
+    final Set<Integer> imdFrequencies = new TreeSet<>(Comparator.comparing(integer -> integer, Comparator.reverseOrder()));
+
+    for (int i = 0; i < combination.size(); i++) {
+      for (int j = i; j < combination.size(); j++) {
+        imdFrequencies.add(combination.get(i).getRecommendedChannel().getFrequency() * 2 - combination.get(j).getRecommendedChannel().getFrequency());
+        imdFrequencies.add(combination.get(j).getRecommendedChannel().getFrequency() * 2 - combination.get(i).getRecommendedChannel().getFrequency());
+      }
+    }
+
+    for (final Integer imdFrequency : imdFrequencies) {
+      if (combination.stream().anyMatch(pilot -> {
+        if (imdFrequency.equals(pilot.getRecommendedChannel().getFrequency())) {
+          return false;
+        }
+        else if (imdFrequency < pilot.getRecommendedChannel().getFrequency()) {
+          return imdFrequency + upperSpacing >= pilot.getRecommendedChannel().getFrequency() - lowerSpacing;
+        }
+        else {
+          return pilot.getRecommendedChannel().getFrequency() + upperSpacing >= imdFrequency - lowerSpacing;
+        }
+      })) {
+        return false;
+      }
+    }
+
     return true;
   }
 
@@ -151,7 +178,6 @@ public class ConventionalFrequencySelectionServiceImpl implements FrequencySelec
         .parallelStream().peek(pilots ->
             pilots.sort(Comparator.comparing(pilot ->
                 pilot.getRecommendedChannel().getFrequency())))
-        .distinct()
         .collect(Collectors.toSet());
   }
 

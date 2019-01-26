@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+
+  <changeSet id="2019-01-26-002-data-001" author="franjozilic">
+    <comment>Boscam A</comment>
+
+    <insert tableName="band">
+      <column name="id" valueSequenceNext="band_seq"/>
+      <column name="name" value="A"/>
+      <column name="description" value="Boscam A"/>
+      <column name="preselected" value="Y"/>
+    </insert>
+
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="1"/>
+      <column name="ordinal" valueNumeric="1"/>
+      <column name="frequency" valueNumeric="5865"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="2"/>
+      <column name="ordinal" valueNumeric="2"/>
+      <column name="frequency" valueNumeric="5845"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="3"/>
+      <column name="ordinal" valueNumeric="3"/>
+      <column name="frequency" valueNumeric="5825"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="4"/>
+      <column name="ordinal" valueNumeric="4"/>
+      <column name="frequency" valueNumeric="5805"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="5"/>
+      <column name="ordinal" valueNumeric="5"/>
+      <column name="frequency" valueNumeric="5785"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="6"/>
+      <column name="ordinal" valueNumeric="6"/>
+      <column name="frequency" valueNumeric="5765"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="7"/>
+      <column name="ordinal" valueNumeric="7"/>
+      <column name="frequency" valueNumeric="5745"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="8"/>
+      <column name="ordinal" valueNumeric="8"/>
+      <column name="frequency" valueNumeric="5725"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+  </changeSet>
+
+  <changeSet id="2019-01-26-002-data-002" author="franjozilic">
+    <comment>Boscam B</comment>
+
+    <insert tableName="band">
+      <column name="id" valueSequenceNext="band_seq"/>
+      <column name="name" value="B"/>
+      <column name="description" value="Boscam B"/>
+      <column name="preselected" value="Y"/>
+    </insert>
+
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="1"/>
+      <column name="ordinal" valueNumeric="1"/>
+      <column name="frequency" valueNumeric="5733"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="2"/>
+      <column name="ordinal" valueNumeric="2"/>
+      <column name="frequency" valueNumeric="5752"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="3"/>
+      <column name="ordinal" valueNumeric="3"/>
+      <column name="frequency" valueNumeric="5771"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="4"/>
+      <column name="ordinal" valueNumeric="4"/>
+      <column name="frequency" valueNumeric="5790"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="5"/>
+      <column name="ordinal" valueNumeric="5"/>
+      <column name="frequency" valueNumeric="5809"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="6"/>
+      <column name="ordinal" valueNumeric="6"/>
+      <column name="frequency" valueNumeric="5828"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="7"/>
+      <column name="ordinal" valueNumeric="7"/>
+      <column name="frequency" valueNumeric="5847"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="8"/>
+      <column name="ordinal" valueNumeric="8"/>
+      <column name="frequency" valueNumeric="5866"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+  </changeSet>
+
+  <changeSet id="2019-01-26-002-data-003" author="franjozilic">
+    <comment>Boscam E</comment>
+
+    <insert tableName="band">
+      <column name="id" valueSequenceNext="band_seq"/>
+      <column name="name" value="E"/>
+      <column name="description" value="Boscam E"/>
+      <column name="preselected" value="Y"/>
+    </insert>
+
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="1"/>
+      <column name="ordinal" valueNumeric="1"/>
+      <column name="frequency" valueNumeric="5705"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="2"/>
+      <column name="ordinal" valueNumeric="2"/>
+      <column name="frequency" valueNumeric="5685"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="3"/>
+      <column name="ordinal" valueNumeric="3"/>
+      <column name="frequency" valueNumeric="5665"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="4"/>
+      <column name="ordinal" valueNumeric="4"/>
+      <column name="frequency" valueNumeric="5645"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="5"/>
+      <column name="ordinal" valueNumeric="5"/>
+      <column name="frequency" valueNumeric="5885"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="6"/>
+      <column name="ordinal" valueNumeric="6"/>
+      <column name="frequency" valueNumeric="5905"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="7"/>
+      <column name="ordinal" valueNumeric="7"/>
+      <column name="frequency" valueNumeric="5925"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="8"/>
+      <column name="ordinal" valueNumeric="8"/>
+      <column name="frequency" valueNumeric="5945"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+  </changeSet>
+
+
+  <changeSet id="2019-01-26-002-data-004" author="franjozilic">
+    <comment>Fatshark</comment>
+
+    <insert tableName="band">
+      <column name="id" valueSequenceNext="band_seq"/>
+      <column name="name" value="F"/>
+      <column name="description" value="Fatshark"/>
+      <column name="preselected" value="Y"/>
+    </insert>
+
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="1"/>
+      <column name="ordinal" valueNumeric="1"/>
+      <column name="frequency" valueNumeric="5740"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="2"/>
+      <column name="ordinal" valueNumeric="2"/>
+      <column name="frequency" valueNumeric="5760"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="3"/>
+      <column name="ordinal" valueNumeric="3"/>
+      <column name="frequency" valueNumeric="5780"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="4"/>
+      <column name="ordinal" valueNumeric="4"/>
+      <column name="frequency" valueNumeric="5800"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="5"/>
+      <column name="ordinal" valueNumeric="5"/>
+      <column name="frequency" valueNumeric="5820"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="6"/>
+      <column name="ordinal" valueNumeric="6"/>
+      <column name="frequency" valueNumeric="5840"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="7"/>
+      <column name="ordinal" valueNumeric="7"/>
+      <column name="frequency" valueNumeric="5860"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="8"/>
+      <column name="ordinal" valueNumeric="8"/>
+      <column name="frequency" valueNumeric="5880"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+  </changeSet>
+
+  <changeSet id="2019-01-26-002-data-005" author="franjozilic">
+    <comment>Raceband</comment>
+
+    <insert tableName="band">
+      <column name="id" valueSequenceNext="band_seq"/>
+      <column name="name" value="R"/>
+      <column name="description" value="Raceband"/>
+      <column name="preselected" value="Y"/>
+    </insert>
+
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="1"/>
+      <column name="ordinal" valueNumeric="1"/>
+      <column name="frequency" valueNumeric="5658"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="2"/>
+      <column name="ordinal" valueNumeric="2"/>
+      <column name="frequency" valueNumeric="5695"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="3"/>
+      <column name="ordinal" valueNumeric="3"/>
+      <column name="frequency" valueNumeric="5732"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="4"/>
+      <column name="ordinal" valueNumeric="4"/>
+      <column name="frequency" valueNumeric="5769"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="5"/>
+      <column name="ordinal" valueNumeric="5"/>
+      <column name="frequency" valueNumeric="5806"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="6"/>
+      <column name="ordinal" valueNumeric="6"/>
+      <column name="frequency" valueNumeric="5843"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="7"/>
+      <column name="ordinal" valueNumeric="7"/>
+      <column name="frequency" valueNumeric="5880"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="8"/>
+      <column name="ordinal" valueNumeric="8"/>
+      <column name="frequency" valueNumeric="5917"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+  </changeSet>
+
+  <changeSet id="2019-01-26-002-data-006" author="franjozilic">
+    <comment>Diatone</comment>
+
+    <insert tableName="band">
+      <column name="id" valueSequenceNext="band_seq"/>
+      <column name="name" value="Diatone"/>
+      <column name="description" value="Diatone"/>
+      <column name="preselected" value="N"/>
+    </insert>
+
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="1"/>
+      <column name="ordinal" valueNumeric="1"/>
+      <column name="frequency" valueNumeric="5362"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="2"/>
+      <column name="ordinal" valueNumeric="2"/>
+      <column name="frequency" valueNumeric="5399"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="3"/>
+      <column name="ordinal" valueNumeric="3"/>
+      <column name="frequency" valueNumeric="5436"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="4"/>
+      <column name="ordinal" valueNumeric="4"/>
+      <column name="frequency" valueNumeric="5473"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="5"/>
+      <column name="ordinal" valueNumeric="5"/>
+      <column name="frequency" valueNumeric="5510"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="6"/>
+      <column name="ordinal" valueNumeric="6"/>
+      <column name="frequency" valueNumeric="5547"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="7"/>
+      <column name="ordinal" valueNumeric="7"/>
+      <column name="frequency" valueNumeric="5584"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="8"/>
+      <column name="ordinal" valueNumeric="8"/>
+      <column name="frequency" valueNumeric="5621"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+  </changeSet>
+
+  <changeSet id="2019-01-26-002-data-007" author="franjozilic">
+    <comment>U</comment>
+
+    <insert tableName="band">
+      <column name="id" valueSequenceNext="band_seq"/>
+      <column name="name" value="U"/>
+      <column name="preselected" value="N"/>
+    </insert>
+
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="1"/>
+      <column name="ordinal" valueNumeric="1"/>
+      <column name="frequency" valueNumeric="5325"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="2"/>
+      <column name="ordinal" valueNumeric="2"/>
+      <column name="frequency" valueNumeric="5348"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="3"/>
+      <column name="ordinal" valueNumeric="3"/>
+      <column name="frequency" valueNumeric="5366"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="4"/>
+      <column name="ordinal" valueNumeric="4"/>
+      <column name="frequency" valueNumeric="5384"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="5"/>
+      <column name="ordinal" valueNumeric="5"/>
+      <column name="frequency" valueNumeric="5402"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="6"/>
+      <column name="ordinal" valueNumeric="6"/>
+      <column name="frequency" valueNumeric="5420"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="7"/>
+      <column name="ordinal" valueNumeric="7"/>
+      <column name="frequency" valueNumeric="5438"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="8"/>
+      <column name="ordinal" valueNumeric="8"/>
+      <column name="frequency" valueNumeric="5456"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+  </changeSet>
+
+  <changeSet id="2019-01-26-002-data-008" author="franjozilic">
+    <comment>O</comment>
+
+    <insert tableName="band">
+      <column name="id" valueSequenceNext="band_seq"/>
+      <column name="name" value="O"/>
+      <column name="preselected" value="N"/>
+    </insert>
+
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="1"/>
+      <column name="ordinal" valueNumeric="1"/>
+      <column name="frequency" valueNumeric="5474"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="2"/>
+      <column name="ordinal" valueNumeric="2"/>
+      <column name="frequency" valueNumeric="5492"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="3"/>
+      <column name="ordinal" valueNumeric="3"/>
+      <column name="frequency" valueNumeric="5510"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="4"/>
+      <column name="ordinal" valueNumeric="4"/>
+      <column name="frequency" valueNumeric="5528"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="5"/>
+      <column name="ordinal" valueNumeric="5"/>
+      <column name="frequency" valueNumeric="5546"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="6"/>
+      <column name="ordinal" valueNumeric="6"/>
+      <column name="frequency" valueNumeric="5564"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="7"/>
+      <column name="ordinal" valueNumeric="7"/>
+      <column name="frequency" valueNumeric="5582"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="8"/>
+      <column name="ordinal" valueNumeric="8"/>
+      <column name="frequency" valueNumeric="5600"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+  </changeSet>
+
+  <changeSet id="2019-01-26-002-data-009" author="franjozilic">
+    <comment>L</comment>
+
+    <insert tableName="band">
+      <column name="id" valueSequenceNext="band_seq"/>
+      <column name="name" value="L"/>
+      <column name="preselected" value="N"/>
+    </insert>
+
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="1"/>
+      <column name="ordinal" valueNumeric="1"/>
+      <column name="frequency" valueNumeric="5333"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="2"/>
+      <column name="ordinal" valueNumeric="2"/>
+      <column name="frequency" valueNumeric="5373"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="3"/>
+      <column name="ordinal" valueNumeric="3"/>
+      <column name="frequency" valueNumeric="5413"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="4"/>
+      <column name="ordinal" valueNumeric="4"/>
+      <column name="frequency" valueNumeric="5453"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="5"/>
+      <column name="ordinal" valueNumeric="5"/>
+      <column name="frequency" valueNumeric="5493"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="6"/>
+      <column name="ordinal" valueNumeric="6"/>
+      <column name="frequency" valueNumeric="5533"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="7"/>
+      <column name="ordinal" valueNumeric="7"/>
+      <column name="frequency" valueNumeric="5573"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="8"/>
+      <column name="ordinal" valueNumeric="8"/>
+      <column name="frequency" valueNumeric="5613"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+  </changeSet>
+
+  <changeSet id="2019-01-26-002-data-010" author="franjozilic">
+    <comment>H</comment>
+
+    <insert tableName="band">
+      <column name="id" valueSequenceNext="band_seq"/>
+      <column name="name" value="H"/>
+      <column name="preselected" value="N"/>
+    </insert>
+
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="1"/>
+      <column name="ordinal" valueNumeric="1"/>
+      <column name="frequency" valueNumeric="5653"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="2"/>
+      <column name="ordinal" valueNumeric="2"/>
+      <column name="frequency" valueNumeric="5693"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="3"/>
+      <column name="ordinal" valueNumeric="3"/>
+      <column name="frequency" valueNumeric="5733"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="4"/>
+      <column name="ordinal" valueNumeric="4"/>
+      <column name="frequency" valueNumeric="5773"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="5"/>
+      <column name="ordinal" valueNumeric="5"/>
+      <column name="frequency" valueNumeric="5813"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="6"/>
+      <column name="ordinal" valueNumeric="6"/>
+      <column name="frequency" valueNumeric="5853"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="7"/>
+      <column name="ordinal" valueNumeric="7"/>
+      <column name="frequency" valueNumeric="5893"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+    <insert tableName="channel">
+      <column name="id" valueSequenceNext="channel_seq"/>
+      <column name="number" valueNumeric="8"/>
+      <column name="ordinal" valueNumeric="8"/>
+      <column name="frequency" valueNumeric="5933"/>
+      <column name="band_id" valueSequenceCurrent="band_seq"/>
+    </insert>
+  </changeSet>
+</databaseChangeLog>

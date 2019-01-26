@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.1.2.RELEASE</version>
+  </parent>
+
   <groupId>com.github.fzilic</groupId>
   <artifactId>fpv-frequency-helper-backend</artifactId>
   <version>0.0.1-SNAPSHOT</version>
@@ -13,42 +19,16 @@
   <inceptionYear>2018</inceptionYear>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.8</java.version>
-
-    <lombok.version>1.18.0</lombok.version>
-
-    <spring.boot.version>2.0.3.RELEASE</spring.boot.version>
-    <!-- needed for some dependencies when we don't need entire spring-boot -->
-    <spring.version>5.0.7.RELEASE</spring.version>
-    <jackson.version>2.9.6</jackson.version>
-    <!--<jackson-annotations.version>2.8.0</jackson-annotations.version>-->
-
-
-    <!-- TEST -->
-    <junit.version>4.12</junit.version>
-    <mockito.version>2.8.47</mockito.version>
+    <jackson-jsog.version>1.1.1</jackson-jsog.version>
+    <commons-math.version>3.6.1</commons-math.version>
+    <jperf.version>1.0.3</jperf.version>
+    <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <!-- BEING: SPRING BOOT -->
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring.boot.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <!-- END: SPRING BOOT -->
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>${lombok.version}</version>
       <optional>true</optional>
     </dependency>
 
@@ -57,47 +37,60 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
     <!--</editor-fold>-->
 
+    <!--<editor-fold desc="EXTRA">-->
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mattbertolini</groupId>
+      <artifactId>liquibase-slf4j</artifactId>
+      <version>${liquibase-slf4j.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-hibernate5</artifactId>
-      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.voodoodyne.jackson.jsog</groupId>
+      <artifactId>jackson-jsog</artifactId>
+      <version>${jackson-jsog.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-math3</artifactId>
-      <version>3.6.1</version>
+      <version>${commons-math.version}</version>
     </dependency>
 
     <dependency>
       <groupId>net.jperf</groupId>
       <artifactId>jperf</artifactId>
-      <version>1.0.3</version>
+      <version>${jperf.version}</version>
     </dependency>
-
     <dependency>
       <groupId>commons-jexl</groupId>
       <artifactId>commons-jexl</artifactId>
       <version>1.1</version>
     </dependency>
+    <!--</editor-fold>-->
+
 
     <!--<editor-fold desc="RUNTIME">-->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.196</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -111,45 +104,38 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
     <!--</editor-fold>-->
   </dependencies>
 
   <build>
-    <pluginManagement>
-      <plugins>
-
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>${java.version}</source>
-            <target>${java.version}</target>
-            <encoding>${project.build.sourceEncoding}</encoding>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <version>${spring.boot.version}</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>repackage</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-      </plugins>
-    </pluginManagement>
-
     <plugins>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.1</version>
+        <version>0.8.2</version>
         <executions>
           <execution>
             <goals>
@@ -165,6 +151,11 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
+
 </project>

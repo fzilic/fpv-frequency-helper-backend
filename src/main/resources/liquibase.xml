@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+
+  <!--<editor-fold desc="H2" defaultstate="collapsed">-->
+  <property dbms="h2" name="smallint" value="SMALLINT"/>
+  <property dbms="h2" name="integer" value="INTEGER"/>
+  <property dbms="h2" name="long" value="BIGINT"/>
+  <property dbms="h2" name="float" value="REAL"/>
+  <property dbms="h2" name="double" value="DOUBLE PRECISION"/>
+  <property dbms="h2" name="date" value="DATE"/>
+  <property dbms="h2" name="timestamp" value="TIMESTAMP"/>
+  <property dbms="h2" name="timestamp-z" value="TIMESTAMP WITH TIME ZONE"/>
+  <property dbms="h2" name="varchar-unlimited" value="VARCHAR(2147483647)"/>
+  <property dbms="h2" name="clob" value="CLOB"/>
+  <property dbms="h2" name="blob" value="BLOB"/>
+
+  <property dbms="h2" name="now" value="CURRENT_TIMESTAMP()"/>
+  <!--</editor-fold>-->
+
+  <!--<editor-fold desc="PostgreSQL" defaultstate="collapsed">-->
+  <property dbms="postgresql" name="smallint" value="SMALLINT"/>
+  <property dbms="postgresql" name="integer" value="INTEGER"/>
+  <property dbms="postgresql" name="long" value="BIGINT"/>
+  <property dbms="postgresql" name="float" value="REAL"/>
+  <property dbms="postgresql" name="double" value="DOUBLE PRECISION"/>
+  <property dbms="postgresql" name="date" value="DATE"/>
+  <property dbms="postgresql" name="timestamp" value="TIMESTAMP"/>
+  <property dbms="postgresql" name="timestamp-z" value="TIMESTAMP WITH TIME ZONE"/>
+  <property dbms="postgresql" name="varchar-unlimited" value="TEXT"/>
+  <property dbms="postgresql" name="clob" value="TEXT"/>
+  <property dbms="postgresql" name="blob" value="BYTEA"/>
+
+  <property dbms="postgresql" name="now" value="NOW()"/>
+  <!--</editor-fold>-->
+
+  <include relativeToChangelogFile="true" file="changelog/2019-01-26-001-base-tables.xml"/>
+  <include relativeToChangelogFile="true" file="changelog/2019-01-26-002-data.xml"/>
+
+</databaseChangeLog>

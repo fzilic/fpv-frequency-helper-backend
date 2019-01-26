@@ -24,7 +24,7 @@ public class BandController {
 
   @GetMapping({"", "/"})
   @JsonView({BandView.class})
-  public ApiResponse<List<Band>> channels() {
+  public ApiResponse<List<Band>> bands() {
     return ApiResponse.success(repository.findAll());
   }
 

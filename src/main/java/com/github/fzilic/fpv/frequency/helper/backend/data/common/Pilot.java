@@ -1,9 +1,10 @@
 package com.github.fzilic.fpv.frequency.helper.backend.data.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.github.fzilic.fpv.frequency.helper.backend.Validations.Common;
 import com.github.fzilic.fpv.frequency.helper.backend.Validations.SelectionRequest;
+import com.github.fzilic.fpv.frequency.helper.backend.Views.Basic;
 import com.github.fzilic.fpv.frequency.helper.backend.domain.Channel;
 import java.util.List;
 import javax.validation.Valid;
@@ -21,19 +22,20 @@ import lombok.NoArgsConstructor;
 public class Pilot {
 
   @NotNull(groups = {Common.class})
-  @JsonProperty("nickname")
+  @JsonView(Basic.class)
   private String nickname;
 
   @Valid
   @NotNull(groups = {SelectionRequest.class})
   @Size(min = 1, groups = {SelectionRequest.class})
-  @JsonProperty("availableChannels")
+  @JsonView(Basic.class)
   private List<Channel> availableChannels;
 
-  @JsonProperty("recommendedChannel")
+  @JsonView(Basic.class)
   private Channel recommendedChannel;
 
   @JsonIgnore
+  @JsonView(Basic.class)
   private Integer ordinal;
 
 }

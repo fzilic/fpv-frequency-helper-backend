@@ -31,4 +31,5 @@ public enum ApiResponseStatus {
   public Integer getCode() {
     return code;
   }
+
 }

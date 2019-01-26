@@ -1,6 +1,5 @@
 package com.github.fzilic.fpv.frequency.helper.backend.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.fzilic.fpv.frequency.helper.backend.Validations.Common;
 import com.github.fzilic.fpv.frequency.helper.backend.Views.BandView;
@@ -27,21 +26,19 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.ListIndexBase;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"channels"})
+@ToString(exclude = {"channels"})
+@Builder
 @Entity
 @Table(name = "band")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-@ToString(exclude = {"channels"})
-@EqualsAndHashCode(exclude = {"channels"})
-// @JsonIdentityInfo(generator = UUIDGenerator.class)
 public class Band {
 
   @Id
@@ -49,40 +46,32 @@ public class Band {
   @GeneratedValue(generator = "band_seq", strategy = GenerationType.SEQUENCE)
   @Column(name = "id")
   @NotNull(groups = {Common.class})
-  @JsonProperty("id")
   @JsonView({Basic.class})
   private Integer id;
 
   @Version
   @Column(name = "version")
-  @ColumnDefault("0")
-  @JsonProperty("version")
   @JsonView({Basic.class})
   private Integer version;
 
   @Column(name = "name", length = 16, nullable = false, unique = true)
   @NotNull(groups = {Common.class})
   @Length(min = 1, groups = {Common.class})
-  @JsonProperty("name")
   @JsonView({Basic.class})
   private String name;
 
   @Column(name = "description", length = 64)
-  @JsonProperty("description")
   @JsonView({Basic.class})
   private String description;
 
   @Column(name = "preselected", columnDefinition = "CHAR(1)", nullable = false)
-  @Type(type = "org.hibernate.type.TrueFalseType")
-  @ColumnDefault("'F'")
-  @JsonProperty("preselected")
+  @Type(type = "yes_no")
   @JsonView({Basic.class})
   private Boolean preselected;
 
   @OneToMany(mappedBy = "band", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
   @OrderColumn(name = "ordinal")
   @ListIndexBase(1)
-  @JsonProperty("channels")
   @JsonView({BandView.class})
   private List<Channel> channels;
 

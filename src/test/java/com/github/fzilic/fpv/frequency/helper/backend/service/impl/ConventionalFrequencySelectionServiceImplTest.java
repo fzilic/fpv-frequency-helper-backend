@@ -12,26 +12,29 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(properties = {
-    "logging.level=ERROR",
+    "logging.level.org.springframework=WARN",
+    "logging.level.liquibase=WARN",
     "logging.level.com.github.fzilic.fpv.frequency.helper.backend.service=TRACE",
-    "spring.jpa.hibernate.ddl-auto=create-drop",
-    "spring.jpa.properties.hibernate.hbm2ddl.import_files_sql_extractor=org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor"
+    "spring.liquibase.change-log=classpath:/liquibase.xml",
+    "spring.datasource.url=jdbc:h2:mem:",
+    "spring.datasource.username=sa",
+    "spring.datasource.password=sa",
+    "spring.jpa.hibernate.ddl-auto=none"
+
 })
-@DataJpaTest
 public class ConventionalFrequencySelectionServiceImplTest {
 
   @Autowired
@@ -39,7 +42,7 @@ public class ConventionalFrequencySelectionServiceImplTest {
 
   private FrequencySelectionService service;
 
-  @Before
+  @BeforeEach
   public void initService() {
     service = new ConventionalFrequencySelectionServiceImpl();
   }
@@ -56,7 +59,7 @@ public class ConventionalFrequencySelectionServiceImplTest {
         .collect(Collectors.toList());
   }
 
-  @Test(expected = ConflictingPilotsException.class)
+  @Test
   public void shouldFailWithSingleChannelPilotsConflicting() {
     final List<Band> bands = repository.findAll();
 
@@ -70,9 +73,9 @@ public class ConventionalFrequencySelectionServiceImplTest {
         .availableChannels(findSingleChannel(bands, "B", 7))
         .build();
 
-    service.recommendChannels(8, 8, Arrays.asList(pilot1, pilot2));
-
-    fail("Should not happen");
+    assertThatThrownBy(() ->
+        service.recommendChannels(8, 8, Arrays.asList(pilot1, pilot2)))
+        .isInstanceOf(ConflictingPilotsException.class);
   }
 
   @Test
