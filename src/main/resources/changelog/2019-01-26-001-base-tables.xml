@@ -51,9 +51,9 @@
       <column name="frequency" type="${integer}">
         <constraints nullable="false"/>
       </column>
-      <column name="ordinal" type="${integer}">
-        <constraints nullable="false"/>
-      </column>
+      <!--<column name="ordinal" type="${integer}">-->
+      <!--<constraints nullable="false"/>-->
+      <!--</column>-->
 
       <column name="band_id" type="${integer}">
         <constraints nullable="false" foreignKeyName="channel_band_fk"
@@ -66,5 +66,52 @@
       <dropSequence sequenceName="channel_seq"/>
     </rollback>
   </changeSet>
+
+  <changeSet id="2019-01-26-001-base-tables-003" author="franjozilic">
+    <comment>Result</comment>
+
+    <createSequence sequenceName="result_seq"/>
+
+    <createTable tableName="result">
+      <column name="id" type="${integer}">
+        <constraints primaryKey="true" primaryKeyName="result_pk"/>
+      </column>
+      <column name="version" type="${integer}" defaultValueNumeric="0">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="min_separation_channel" type="${integer}">
+        <constraints nullable="false"/>
+      </column>
+      <column name="avg_separation_channel" type="${double}">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="min_separation_imd" type="${integer}">
+        <constraints nullable="false"/>
+      </column>
+      <column name="avg_separation_imd" type="${double}">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="result_channel">
+      <column name="result_id" type="${integer}">
+        <constraints primaryKey="true" primaryKeyName="result_channel_pk" foreignKeyName="result_channel_result_fk"
+                     referencedTableName="result" referencedColumnNames="id"/>
+      </column>
+      <column name="channel_id" type="${integer}">
+        <constraints primaryKey="true" primaryKeyName="result_channel_pk" foreignKeyName="result_channel_channel_fk"
+                     referencedTableName="channel" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+
+    <rollback>
+      <dropTable tableName="result_channel"/>
+      <dropTable tableName="result"/>
+      <dropSequence sequenceName="result_seq"/>
+    </rollback>
+  </changeSet>
+
 
 </databaseChangeLog>

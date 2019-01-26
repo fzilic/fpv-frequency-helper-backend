@@ -2,18 +2,17 @@ package com.github.fzilic.fpv.frequency.helper.backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.fzilic.fpv.frequency.helper.backend.Validations.Common;
-import com.github.fzilic.fpv.frequency.helper.backend.Views.BandView;
 import com.github.fzilic.fpv.frequency.helper.backend.Views.Basic;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -26,8 +25,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.Length;
 
 @Data
 @NoArgsConstructor
@@ -36,13 +33,13 @@ import org.hibernate.validator.constraints.Length;
 @ToString(exclude = {"channels"})
 @Builder
 @Entity
-@Table(name = "band")
+@Table(name = "result")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-public class Band {
+public class Result {
 
   @Id
-  @SequenceGenerator(name = "band_seq", sequenceName = "band_seq", allocationSize = 1)
-  @GeneratedValue(generator = "band_seq", strategy = GenerationType.SEQUENCE)
+  @SequenceGenerator(name = "result_seq", sequenceName = "result_seq", allocationSize = 1)
+  @GeneratedValue(generator = "result_seq", strategy = GenerationType.SEQUENCE)
   @Column(name = "id")
   @NotNull(groups = {Common.class})
   @JsonView({Basic.class})
@@ -53,24 +50,25 @@ public class Band {
   @JsonView({Basic.class})
   private Integer version;
 
-  @Column(name = "name", length = 16, nullable = false, unique = true)
-  @NotNull(groups = {Common.class})
-  @Length(min = 1, groups = {Common.class})
-  @JsonView({Basic.class})
-  private String name;
+  @Column(name = "channels")
+  private Integer numberOfChannels;
 
-  @Column(name = "description", length = 64)
-  @JsonView({Basic.class})
-  private String description;
+  @Column(name = "min_separation_channel")
+  private Integer minimumSeparationChannel;
 
-  @Column(name = "preselected", columnDefinition = "CHAR(1)", nullable = false)
-  @Type(type = "yes_no")
-  @JsonView({Basic.class})
-  private Boolean preselected;
+  @Column(name = "avg_separation_channel")
+  private Double averageSeparationChannel;
 
-  @OneToMany(mappedBy = "band", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-  @OrderBy("number")
-  @JsonView({BandView.class})
+  @Column(name = "min_separation_imd")
+  private Integer minimumSeparationImd;
+
+  @Column(name = "avg_separation_imd")
+  private Double averageSeparationImd;
+
+  @ManyToMany
+  @JoinTable(name = "result_channel",
+      joinColumns = {@JoinColumn(name = "result_id", foreignKey = @ForeignKey(name = "result_channel_result_fk"))},
+      inverseJoinColumns = {@JoinColumn(name = "channel_id", foreignKey = @ForeignKey(name = "result_channel_channel_fk"))})
   private List<Channel> channels;
 
 }
