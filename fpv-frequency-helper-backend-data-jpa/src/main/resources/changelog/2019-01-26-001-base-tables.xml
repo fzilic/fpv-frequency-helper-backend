@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+
+  <changeSet id="2019-01-26-001-base-tables-001" author="franjozilic">
+    <comment>Band</comment>
+
+    <createSequence sequenceName="band_seq"/>
+
+    <createTable tableName="band">
+      <column name="id" type="${integer}">
+        <constraints primaryKey="true" primaryKeyName="band_pk"/>
+      </column>
+      <column name="version" type="${integer}" defaultValueNumeric="0">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="name" type="VARCHAR(16)">
+        <constraints nullable="false" unique="true" uniqueConstraintName="band_name_uk"/>
+      </column>
+      <column name="description" type="VARCHAR(64)"/>
+      <column name="preselected" type="CHAR(1)" defaultValue="N">
+        <constraints nullable="false" checkConstraint="preselected IN ('Y', 'N')"/>
+      </column>
+    </createTable>
+
+    <rollback>
+      <dropTable tableName="band"/>
+      <dropSequence sequenceName="band_seq"/>
+    </rollback>
+  </changeSet>
+
+  <changeSet id="2019-01-26-001-base-tables-002" author="franjozilic">
+    <comment>Channel</comment>
+
+    <createSequence sequenceName="channel_seq"/>
+
+    <createTable tableName="channel">
+      <column name="id" type="${integer}">
+        <constraints primaryKey="true" primaryKeyName="channel_pk"/>
+      </column>
+      <column name="version" type="${integer}" defaultValueNumeric="0">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="number" type="${integer}">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frequency" type="${integer}">
+        <constraints nullable="false"/>
+      </column>
+      <!--<column name="ordinal" type="${integer}">-->
+      <!--<constraints nullable="false"/>-->
+      <!--</column>-->
+
+      <column name="band_id" type="${integer}">
+        <constraints nullable="false" foreignKeyName="channel_band_fk"
+                     referencedTableName="channel" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+
+    <rollback>
+      <dropTable tableName="channel"/>
+      <dropSequence sequenceName="channel_seq"/>
+    </rollback>
+  </changeSet>
+
+  <changeSet id="2019-01-26-001-base-tables-003" author="franjozilic">
+    <comment>Result</comment>
+
+    <createSequence sequenceName="result_seq" incrementBy="500"/>
+
+    <createTable tableName="result">
+      <column name="id" type="${integer}">
+        <constraints primaryKey="true" primaryKeyName="result_pk"/>
+      </column>
+      <column name="version" type="${integer}" defaultValueNumeric="0">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="channels" type="${integer}">
+        <constraints nullable="false"/>
+      </column>
+      <column name="frequencies" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="min_separation_channel" type="${integer}">
+        <constraints nullable="false"/>
+      </column>
+      <column name="avg_separation_channel" type="${double}">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="min_separation_imd" type="${integer}">
+        <constraints nullable="false"/>
+      </column>
+      <column name="avg_separation_imd" type="${double}">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="result_channel">
+      <column name="result_id" type="${integer}">
+        <constraints primaryKey="true" primaryKeyName="result_channel_pk" foreignKeyName="result_channel_result_fk"
+                     referencedTableName="result" referencedColumnNames="id"/>
+      </column>
+      <column name="channel_id" type="${integer}">
+        <constraints primaryKey="true" primaryKeyName="result_channel_pk" foreignKeyName="result_channel_channel_fk"
+                     referencedTableName="channel" referencedColumnNames="id"/>
+      </column>
+    </createTable>
+
+    <rollback>
+      <dropTable tableName="result_channel"/>
+      <dropTable tableName="result"/>
+      <dropSequence sequenceName="result_seq"/>
+    </rollback>
+  </changeSet>
+
+
+</databaseChangeLog>

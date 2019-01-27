@@ -1,0 +1,28 @@
+logging.level:
+  root: warn
+  org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl: warn
+  org.springframework: warn
+  liquibase.executor: warn
+  net.jperf.TimingLogger: info
+  com.github.fzilic.fpv.frequency.helper.backend: info
+  #com.github.fzilic.fpv.frequency.helper.backend.generator.service.DefaultQualityCalculationComponent: debug
+  #org.hibernate.SQL: debug
+
+spring.liquibase.change-log: classpath:/liquibase.xml
+
+spring.h2.console.enabled: true
+
+
+spring.datasource:
+  url: jdbc:h2:mem:devdb
+  username: sa
+  password: sa
+
+spring.task.execution:
+  pool.max-size: 256
+
+spring.jpa.properties:
+  hibernate.jdbc.batch_size: 500
+  hibernate.jdbc.batch_versioned_data: true
+  hibernate.order_inserts: true
+  hibernate.order_updates: true
