@@ -14,6 +14,7 @@ public abstract class QueryUtil {
       "  INNER JOIN r0.channels c0 " +
       "  WHERE c0.id IN :p0 " +
       "  AND r0.numberOfChannels = :numberOfChannels " +
+      "  AND r0.id = r.id " +
       "  AND EXISTS ( " +
       "    SELECT c1.id " +
       "    FROM Result r1 " +
@@ -21,6 +22,7 @@ public abstract class QueryUtil {
       "    WHERE c1.id IN :p1 " +
       "    AND r1.numberOfChannels = :numberOfChannels " +
       "    AND c1.id NOT IN ( c0.id ) " +
+      "    AND r1.id = r.id " +
       "  ) " +
       ") " +
       "ORDER BY r.minimumSeparationImd DESC," +
@@ -38,6 +40,7 @@ public abstract class QueryUtil {
       "  INNER JOIN r0.channels c0 " +
       "  WHERE c0.id IN :p0 " +
       "  AND r0.numberOfChannels = :numberOfChannels " +
+      "  AND r0.id = r.id " +
       "  AND EXISTS ( " +
       "    SELECT c1.id " +
       "    FROM Result r1 " +
@@ -45,6 +48,7 @@ public abstract class QueryUtil {
       "    WHERE c1.id IN :p1 " +
       "    AND r1.numberOfChannels = :numberOfChannels " +
       "    AND c1.id NOT IN ( c0.id ) " +
+      "    AND r1.id = r.id " +
       "    AND EXISTS ( " +
       "      SELECT c2.id " +
       "      FROM Result r2 " +
@@ -53,6 +57,7 @@ public abstract class QueryUtil {
       "      AND r2.numberOfChannels = :numberOfChannels " +
       "      AND c2.id NOT IN ( c0.id ) " +
       "      AND c2.id NOT IN ( c1.id ) " +
+      "      AND r2.id = r.id " +
       "    ) " +
       "  ) " +
       ") " +
@@ -71,6 +76,7 @@ public abstract class QueryUtil {
       "  INNER JOIN r0.channels c0 " +
       "  WHERE c0.id IN :p0 " +
       "  AND r0.numberOfChannels = :numberOfChannels " +
+      "  AND r0.id = r.id " +
       "  AND EXISTS ( " +
       "    SELECT c1.id " +
       "    FROM Result r1 " +
@@ -78,6 +84,7 @@ public abstract class QueryUtil {
       "    WHERE c1.id IN :p1 " +
       "    AND r1.numberOfChannels = :numberOfChannels " +
       "    AND c1.id NOT IN ( c0.id ) " +
+      "    AND r1.id = r.id " +
       "    AND EXISTS ( " +
       "      SELECT c2.id " +
       "      FROM Result r2 " +
@@ -86,6 +93,7 @@ public abstract class QueryUtil {
       "      AND r2.numberOfChannels = :numberOfChannels " +
       "      AND c2.id NOT IN ( c0.id ) " +
       "      AND c2.id NOT IN ( c1.id ) " +
+      "      AND r2.id = r.id " +
       "      AND EXISTS ( " +
       "        SELECT c3.id " +
       "        FROM Result r3 " +
@@ -95,6 +103,7 @@ public abstract class QueryUtil {
       "        AND c3.id NOT IN ( c0.id ) " +
       "        AND c3.id NOT IN ( c1.id ) " +
       "        AND c3.id NOT IN ( c2.id ) " +
+      "        AND r3.id = r.id " +
       "      ) " +
       "    ) " +
       "  ) " +
@@ -114,6 +123,7 @@ public abstract class QueryUtil {
       "  INNER JOIN r0.channels c0 " +
       "  WHERE c0.id IN :p0 " +
       "  AND r0.numberOfChannels = :numberOfChannels " +
+      "  AND r0.id = r.id " +
       "  AND EXISTS ( " +
       "    SELECT c1.id " +
       "    FROM Result r1 " +
@@ -121,6 +131,7 @@ public abstract class QueryUtil {
       "    WHERE c1.id IN :p1 " +
       "    AND c1.id NOT IN ( c0.id ) " +
       "    AND r1.numberOfChannels = :numberOfChannels " +
+      "    AND r1.id = r.id " +
       "    AND EXISTS ( " +
       "      SELECT c2.id " +
       "      FROM Result r2 " +
@@ -129,6 +140,7 @@ public abstract class QueryUtil {
       "      AND c2.id NOT IN ( c0.id ) " +
       "      AND c2.id NOT IN ( c1.id ) " +
       "      AND r2.numberOfChannels = :numberOfChannels " +
+      "      AND r2.id = r.id " +
       "      AND EXISTS ( " +
       "        SELECT c3.id " +
       "        FROM Result r3 " +
@@ -138,6 +150,7 @@ public abstract class QueryUtil {
       "        AND c3.id NOT IN ( c1.id ) " +
       "        AND c3.id NOT IN ( c2.id ) " +
       "        AND r3.numberOfChannels = :numberOfChannels " +
+      "        AND r3.id = r.id " +
       "        AND EXISTS ( " +
       "          SELECT c4.id " +
       "          FROM Result r4 " +
@@ -148,6 +161,7 @@ public abstract class QueryUtil {
       "          AND c4.id NOT IN ( c2.id ) " +
       "          AND c4.id NOT IN ( c3.id ) " +
       "          AND r4.numberOfChannels = :numberOfChannels " +
+      "          AND r4.id = r.id " +
       "        ) " +
       "      ) " +
       "    ) " +
@@ -167,6 +181,7 @@ public abstract class QueryUtil {
       "  FROM Result r0 " +
       "  INNER JOIN r0.channels c0 " +
       "  WHERE c0.id IN :p0 " +
+      "  AND r0.id = r.id " +
       "  AND r0.numberOfChannels = :numberOfChannels " +
       "  AND EXISTS ( " +
       "    SELECT c1.id " +
@@ -175,6 +190,7 @@ public abstract class QueryUtil {
       "    WHERE c1.id IN :p1 " +
       "    AND c1.id NOT IN ( c0.id ) " +
       "    AND r1.numberOfChannels = :numberOfChannels " +
+      "    AND r1.id = r.id " +
       "    AND EXISTS ( " +
       "      SELECT c2.id " +
       "      FROM Result r2 " +
@@ -183,6 +199,7 @@ public abstract class QueryUtil {
       "      AND c2.id NOT IN ( c0.id ) " +
       "      AND c2.id NOT IN ( c1.id ) " +
       "      AND r2.numberOfChannels = :numberOfChannels " +
+      "      AND r2.id = r.id " +
       "      AND EXISTS ( " +
       "        SELECT c3.id " +
       "        FROM Result r3 " +
@@ -192,6 +209,7 @@ public abstract class QueryUtil {
       "        AND c3.id NOT IN ( c1.id ) " +
       "        AND c3.id NOT IN ( c2.id ) " +
       "        AND r3.numberOfChannels = :numberOfChannels " +
+      "        AND r3.id = r.id " +
       "        AND EXISTS ( " +
       "          SELECT c4.id " +
       "          FROM Result r4 " +
@@ -202,6 +220,7 @@ public abstract class QueryUtil {
       "          AND c4.id NOT IN ( c2.id ) " +
       "          AND c4.id NOT IN ( c3.id ) " +
       "          AND r4.numberOfChannels = :numberOfChannels " +
+      "          AND r4.id = r.id " +
       "          AND EXISTS ( " +
       "            SELECT c5.id " +
       "            FROM Result r5 " +
@@ -213,6 +232,7 @@ public abstract class QueryUtil {
       "            AND c5.id NOT IN ( c3.id ) " +
       "            AND c5.id NOT IN ( c4.id ) " +
       "            AND r5.numberOfChannels = :numberOfChannels " +
+      "            AND r5.id = r.id " +
       "          ) " +
       "        ) " +
       "      ) " +
