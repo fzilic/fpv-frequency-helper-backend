@@ -9,6 +9,7 @@ import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.exception.Confl
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.service.FrequencySelectionService;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.util.QueryUtil;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -117,36 +118,77 @@ public class DefaultFrequencySelectionService implements FrequencySelectionServi
         .map(result -> {
           final List<Channel> recommendations = new ArrayList<>(result.getChannels());
 
-          return RecommendationResult.builder()
+          final RecommendationResult build = RecommendationResult.builder()
               .result(result)
               .pilots(pilots.stream()
                   .sorted(Comparator.comparing(Pilot::getOrdinal))
-                  // .peek(pilot ->
-                  //     pilot.getAvailableChannels()
-                  //         .removeIf(channel ->
-                  //             recommendations.stream()
-                  //                 .noneMatch(c ->
-                  //                     c.getId().equals(channel.getId()))))
-                  .map(pilot ->
-                      recommendations.stream()
+                  .peek(pilot ->
+                      pilot.setAvailableChannels(pilot.getAvailableChannels().stream()
                           .filter(channel ->
-                              pilot.getAvailableChannels().stream().anyMatch(pilotChannel ->
-                                  pilotChannel.getId().equals(channel.getId())))
-                          .findAny()
-                          .map(channel -> {
-                            recommendations.removeIf(c -> c.getId().equals(channel.getId()));
-                            return Pilot.builder()
-                                .nickname(pilot.getNickname())
-                                .ordinal(pilot.getOrdinal())
-                                .recommendedChannel(channel)
-                                .build();
-                          }).orElse(null))
+                              recommendations.stream()
+                                  .anyMatch(recommendation ->
+                                      recommendation.getId().equals(channel.getId())))
+                          .collect(Collectors.toList())))
+                  .map(pilot ->
+                      Pilot.builder()
+                          .nickname(pilot.getNickname())
+                          .ordinal(pilot.getOrdinal())
+                          .availableChannels(pilot.getAvailableChannels())
+                          // .recommendedChannel(channel)
+                          .build())
                   .collect(Collectors.toList()))
               .build();
+
+
+          build.getPilots().stream()
+              .filter(pilot ->
+                  pilot.getAvailableChannels().size() == 1)
+              .forEach(pilot -> {
+                recommendations.remove(pilot.getAvailableChannels().get(0));
+                pilot.setRecommendedChannel(pilot.getAvailableChannels().get(0));
+                pilot.setAvailableChannels(null);
+              });
+
+          int maxAttempts = 500;
+          while (build.getPilots().stream().anyMatch(pilot -> pilot.getRecommendedChannel() == null) && maxAttempts > 0) {
+            build.getPilots().stream()
+                .filter(pilot ->
+                    pilot.getRecommendedChannel() == null)
+                .findAny()
+                .ifPresent(pilot -> {
+
+                  pilot.getAvailableChannels().stream()
+                      .filter(channel ->
+                          build.getPilots().stream()
+                              .filter(other ->
+                                  !other.equals(pilot) && other.getAvailableChannels() != null)
+                              .map(Pilot::getAvailableChannels)
+                              .flatMap(Collection::stream)
+                              .noneMatch(other -> channel.getId().equals(other.getId())))
+                      .findAny()
+                      .ifPresent(channel -> {
+                        pilot.setRecommendedChannel(channel);
+                        pilot.setAvailableChannels(null);
+                        recommendations.remove(channel);
+                      });
+
+                  if (pilot.getRecommendedChannel() == null) {
+                    pilot.setRecommendedChannel(recommendations.get(0));
+                    recommendations.remove(pilot.getRecommendedChannel());
+                  }
+
+                });
+
+            maxAttempts--;
+          }
+
+          return build;
         })
         .filter(recommendationResult ->
             recommendationResult.getPilots().stream().filter(Objects::nonNull).count() == pilots.size())
         .collect(Collectors.toList());
+
+
     return results;
   }
 
