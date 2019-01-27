@@ -5,8 +5,7 @@ import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Validations.Selec
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.ChannelView;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.repository.ChannelRepository;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.api.ApiResponse;
-import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.api.ApiResponseStatus;
-import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.common.Pilot;
+import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.common.RecommendationResult;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.request.FrequencySelectionRequest;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.service.FrequencySelectionService;
 import java.util.List;
@@ -26,22 +25,17 @@ public class FrequencySelectionController {
 
   private final ChannelRepository channelRepository;
 
-  private final List<FrequencySelectionService> services;
+  private final FrequencySelectionService service;
 
   @Autowired
-  public FrequencySelectionController(final ChannelRepository channelRepository, final List<FrequencySelectionService> services) {
+  public FrequencySelectionController(final ChannelRepository channelRepository, final FrequencySelectionService service) {
     this.channelRepository = channelRepository;
-    this.services = services;
+    this.service = service;
   }
 
   @PostMapping({"", "/"})
   @JsonView(ChannelView.class)
-  public ApiResponse<List<List<Pilot>>> recommendFrequencies(@Validated({SelectionRequest.class}) @RequestBody final FrequencySelectionRequest request) {
-    final long combinations = request.getPilots().stream()
-        .mapToLong(pilot ->
-            pilot.getAvailableChannels().size())
-        .reduce(1, (left, right) -> left * right);
-
+  public ApiResponse<List<RecommendationResult>> recommendFrequencies(@Validated({SelectionRequest.class}) @RequestBody final FrequencySelectionRequest request) {
     request.getPilots()
         .forEach(pilot ->
             pilot.setAvailableChannels(pilot.getAvailableChannels().stream()
@@ -49,21 +43,6 @@ public class FrequencySelectionController {
                     channelRepository.getOne(channel.getId()))
                 .collect(Collectors.toList())));
 
-    log.info("Calculating frequencies for {} pilots with channels {} total combinations {}",
-        request.getPilots().size(),
-        request.getPilots().stream()
-            .map(pilot ->
-                pilot.getAvailableChannels().size())
-            .collect(Collectors.toList()),
-        combinations);
-
-
-    return services.stream()
-        .filter(service ->
-            service.supportsNumberOfCombinations(combinations))
-        .findAny()
-        .map(service ->
-            ApiResponse.success(service.recommendChannels(request.getLowerSpacing(), request.getUpperSpacing(), request.getPilots())))
-        .orElse(ApiResponse.error(ApiResponseStatus.TOO_MANY_COMBINATIONS, "Unable to locate computational service that supports " + combinations + " combinations"));
+    return ApiResponse.success(service.recommendChannels(request.getPilots(), request.getMinimumSeparation()));
   }
 }

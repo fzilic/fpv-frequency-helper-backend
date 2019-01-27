@@ -21,12 +21,7 @@ public class FrequencySelectionRequest {
   @NotNull(groups = {Common.class})
   @Min(value = 0, groups = {Common.class})
   @Max(value = 100, groups = {Common.class})
-  private Integer lowerSpacing;
-
-  @NotNull(groups = {Common.class})
-  @Min(value = 0, groups = {Common.class})
-  @Max(value = 100, groups = {Common.class})
-  private Integer upperSpacing;
+  private Integer minimumSeparation;
 
 
 }

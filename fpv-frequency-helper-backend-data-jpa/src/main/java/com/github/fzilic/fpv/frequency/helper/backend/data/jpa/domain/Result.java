@@ -3,6 +3,7 @@ package com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Validations.Common;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.Basic;
+import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.ChannelView;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -52,21 +53,27 @@ public class Result {
   private Integer version;
 
   @Column(name = "channels")
+  @JsonView({Basic.class})
   private Integer numberOfChannels;
 
   @Column(name = "frequencies")
+  @JsonView({Basic.class})
   private String frequencies;
 
   @Column(name = "min_separation_channel")
+  @JsonView({Basic.class})
   private Integer minimumSeparationChannel;
 
   @Column(name = "avg_separation_channel")
+  @JsonView({Basic.class})
   private Double averageSeparationChannel;
 
   @Column(name = "min_separation_imd")
+  @JsonView({Basic.class})
   private Integer minimumSeparationImd;
 
   @Column(name = "avg_separation_imd")
+  @JsonView({Basic.class})
   private Double averageSeparationImd;
 
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
@@ -75,6 +82,7 @@ public class Result {
       foreignKey = @ForeignKey(name = "result_channel_result_fk"),
       inverseJoinColumns = @JoinColumn(name = "channel_id"),
       inverseForeignKey = @ForeignKey(name = "result_channel_channel_fk"))
+  @JsonView({ChannelView.class})
   private List<Channel> channels;
 
 }
