@@ -23,6 +23,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -40,6 +41,7 @@ public class DefaultFrequencySelectionService implements FrequencySelectionServi
 
   @SuppressWarnings("Duplicates")
   @Override
+  @Transactional
   public List<RecommendationResult> recommendChannels(final List<Pilot> pilots, final Integer minimumSeparation) {
     if (pilots.size() < 2 || pilots.size() > 6) {
       throw new IllegalArgumentException();
@@ -103,6 +105,7 @@ public class DefaultFrequencySelectionService implements FrequencySelectionServi
     }
 
     final List<Result> found = query
+        .setHint("org.hibernate.cacheable", true)
         .setMaxResults(50)
         .getResultList();
 

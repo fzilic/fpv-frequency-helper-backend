@@ -5,6 +5,7 @@ import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Validations.Commo
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.Basic;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.ChannelView;
 import java.util.List;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,7 +39,8 @@ import org.hibernate.annotations.ListIndexBase;
 @Builder
 @Entity
 @Table(name = "result")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Result_L2")
 public class Result {
 
   @Id
@@ -87,6 +89,7 @@ public class Result {
   @JsonView({ChannelView.class})
   @OrderColumn(name = "index", nullable = false)
   @ListIndexBase(1)
+  @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Result_L2.channels")
   private List<Channel> channels;
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Validations.Common;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.Basic;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.ChannelView;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +36,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Builder
 @Entity
 @Table(name = "channel")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Channel_L2")
 public class Channel {
 
   @Id

@@ -94,6 +94,14 @@
       <artifactId>postgresql</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <!--<dependency>-->
+    <!--<groupId>org.infinispan</groupId>-->
+    <!--<artifactId>infinispan-hibernate-cache-v53</artifactId>-->
+    <!--</dependency>-->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-ehcache</artifactId>
+    </dependency>
     <!--</editor-fold>-->
 
     <!--<editor-fold desc="TEST">-->

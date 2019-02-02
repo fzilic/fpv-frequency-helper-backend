@@ -1,0 +1,10 @@
+#logging.level:
+#  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: ERROR
+
+spring.jpa.properties:
+  javax.persistence.sharedCache.mode: ENABLE_SELECTIVE
+  net.sf.ehcache.configurationResourceName: ehcache-local.xml
+  hibernate.cache.use_second_level_cache: true
+  hibernate.cache.use_query_cache: true
+  hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+  hibernate.generate_statistics: true

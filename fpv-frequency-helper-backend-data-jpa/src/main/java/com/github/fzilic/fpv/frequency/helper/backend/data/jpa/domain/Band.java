@@ -5,6 +5,7 @@ import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Validations.Commo
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.BandView;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.Basic;
 import java.util.List;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +38,8 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 @Entity
 @Table(name = "band")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Band_L2")
 public class Band {
 
   @Id
@@ -71,6 +73,7 @@ public class Band {
   @OneToMany(mappedBy = "band", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
   @OrderBy("number")
   @JsonView({BandView.class})
+  @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Band_L2.channels")
   private List<Channel> channels;
 
 }

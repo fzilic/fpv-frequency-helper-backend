@@ -7,3 +7,5 @@ logging.level:
   com.github.fzilic.fpv.frequency.helper.backend: debug
 
 spring.liquibase.change-log: classpath:/liquibase.xml
+
+#spring.jpa.open-in-view: false
