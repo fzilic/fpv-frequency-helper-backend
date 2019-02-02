@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.persistence.EntityManager;
@@ -106,90 +106,106 @@ public class DefaultFrequencySelectionService implements FrequencySelectionServi
         .setMaxResults(50)
         .getResultList();
 
-    // final Page<Result> found = resultRepository.findAll(QResult.result.numberOfChannels.eq(pilots.size())
-    //         .and(QResult.result.minimumSeparationChannel.goe(minimumSeparation))
-    //         .and(QResult.result.minimumSeparationImd.goe(minimumSeparation))
-    //         .and(ExpressionUtils.allOf(predicates)),
-    //     PageRequest.of(0, 50, Sort.by(Order.desc("minimumSeparationImd"), Order.desc("minimumSeparationChannel"))));
 
-
-    // return null;
-    final List<RecommendationResult> results = found.stream()
+    return found.stream()
         .map(result -> {
           final List<Channel> recommendations = new ArrayList<>(result.getChannels());
 
-          final RecommendationResult build = RecommendationResult.builder()
-              .result(result)
-              .pilots(pilots.stream()
-                  .sorted(Comparator.comparing(Pilot::getOrdinal))
-                  .peek(pilot ->
-                      pilot.setAvailableChannels(pilot.getAvailableChannels().stream()
-                          .filter(channel ->
-                              recommendations.stream()
-                                  .anyMatch(recommendation ->
-                                      recommendation.getId().equals(channel.getId())))
-                          .collect(Collectors.toList())))
-                  .map(pilot ->
-                      Pilot.builder()
-                          .nickname(pilot.getNickname())
-                          .ordinal(pilot.getOrdinal())
-                          .availableChannels(pilot.getAvailableChannels())
-                          // .recommendedChannel(channel)
-                          .build())
-                  .collect(Collectors.toList()))
-              .build();
+          final List<Pilot> pilotsForRecommendation = pilots.stream()
+              .map(pilot -> Pilot.builder()
+                  .nickname(pilot.getNickname())
+                  .ordinal(pilot.getOrdinal())
+                  .availableChannels(pilot.getAvailableChannels().stream()
+                      .filter(channel ->
+                          recommendations.stream()
+                              .anyMatch(recommended ->
+                                  recommended.getId().equals(channel.getId())))
+                      .collect(Collectors.toList()))
+                  .build())
+              .collect(Collectors.toList());
 
+          final int maxIterations = recommendations.size() * pilotsForRecommendation.stream()
+              .map(Pilot::getAvailableChannels)
+              .mapToInt(List::size)
+              .sum();
 
-          build.getPilots().stream()
-              .filter(pilot ->
-                  pilot.getAvailableChannels().size() == 1)
-              .forEach(pilot -> {
-                recommendations.remove(pilot.getAvailableChannels().get(0));
+          int limit = maxIterations;
+
+          while (!recommendations.isEmpty()) {
+
+            pilotsForRecommendation.forEach(pilot -> {
+              if (pilot.getAvailableChannels().size() == 1) {
                 pilot.setRecommendedChannel(pilot.getAvailableChannels().get(0));
-                pilot.setAvailableChannels(null);
-              });
+                recommendations.removeIf(recommendation ->
+                    recommendation.getId().equals(pilot.getRecommendedChannel().getId()));
+              }
+            });
 
-          int maxAttempts = 500;
-          while (build.getPilots().stream().anyMatch(pilot -> pilot.getRecommendedChannel() == null) && maxAttempts > 0) {
-            build.getPilots().stream()
+            pilotsForRecommendation.stream()
+                .filter(p -> p.getRecommendedChannel() == null)
+                .forEach(pilot ->
+                    pilot.setAvailableChannels(pilot.getAvailableChannels().stream()
+                        .filter(channel -> recommendations.stream()
+                            .anyMatch(recommendation -> recommendation.getId().equals(channel.getId())))
+                        .collect(Collectors.toList())));
+
+
+            final Set<Channel> distinct = pilotsForRecommendation.stream()
                 .filter(pilot ->
                     pilot.getRecommendedChannel() == null)
-                .findAny()
-                .ifPresent(pilot -> {
+                .map(Pilot::getAvailableChannels)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
 
-                  pilot.getAvailableChannels().stream()
-                      .filter(channel ->
-                          build.getPilots().stream()
-                              .filter(other ->
-                                  !other.equals(pilot) && other.getAvailableChannels() != null)
-                              .map(Pilot::getAvailableChannels)
-                              .flatMap(Collection::stream)
-                              .noneMatch(other -> channel.getId().equals(other.getId())))
-                      .findAny()
-                      .ifPresent(channel -> {
+            if (pilotsForRecommendation.stream()
+                .noneMatch(pilot ->
+                    pilot.getRecommendedChannel() == null
+                        && pilot.getAvailableChannels().size() != distinct.size())) {
+              pilotsForRecommendation.get(0).setRecommendedChannel(pilotsForRecommendation.get(0).getAvailableChannels().get(0));
+              recommendations.removeIf(recommendation -> recommendation.getId().equals(pilotsForRecommendation.get(0).getRecommendedChannel().getId()));
+            }
+            else {
+
+              pilotsForRecommendation.stream()
+                  .filter(pilot ->
+                      pilot.getRecommendedChannel() == null
+                          && pilot.getAvailableChannels().size() == distinct.size())
+                  .findAny()
+                  .ifPresent(pilot ->
+                      pilot.getAvailableChannels().stream()
+                          .filter(available ->
+                              pilotsForRecommendation.stream()
+                                  .filter(other ->
+                                      other.getRecommendedChannel() == null
+                                          && other.getAvailableChannels().size() != distinct.size())
+                                  .map(Pilot::getAvailableChannels)
+                                  .flatMap(Collection::stream)
+                                  .distinct()
+                                  .noneMatch(other -> other.getId().equals(available.getId())))
+                          .findAny().ifPresent(channel -> {
                         pilot.setRecommendedChannel(channel);
-                        pilot.setAvailableChannels(null);
-                        recommendations.remove(channel);
-                      });
+                        recommendations.removeIf(recommendation ->
+                            recommendation.getId().equals(channel.getId()));
+                      }));
+            }
 
-                  if (pilot.getRecommendedChannel() == null) {
-                    pilot.setRecommendedChannel(recommendations.get(0));
-                    recommendations.remove(pilot.getRecommendedChannel());
-                  }
+            limit--;
 
-                });
-
-            maxAttempts--;
+            if (limit <= 0) {
+              log.warn("Failed to resolve {} {} {} {}", maxIterations, result.getFrequencies(), recommendations, pilotsForRecommendation);
+              break;
+            }
           }
 
-          return build;
+
+          return RecommendationResult.builder()
+              .result(result)
+              .pilots(pilotsForRecommendation)
+              .build();
         })
-        .filter(recommendationResult ->
-            recommendationResult.getPilots().stream().filter(Objects::nonNull).count() == pilots.size())
+        .filter(recommendationResult -> recommendationResult.getPilots().stream()
+            .noneMatch(pilot -> pilot.getRecommendedChannel() == null))
         .collect(Collectors.toList());
-
-
-    return results;
   }
 
 }

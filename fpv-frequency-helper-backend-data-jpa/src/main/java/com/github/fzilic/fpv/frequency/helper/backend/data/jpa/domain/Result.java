@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -27,6 +28,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.ListIndexBase;
 
 @Data
 @NoArgsConstructor
@@ -83,6 +85,8 @@ public class Result {
       inverseJoinColumns = @JoinColumn(name = "channel_id"),
       inverseForeignKey = @ForeignKey(name = "result_channel_channel_fk"))
   @JsonView({ChannelView.class})
+  @OrderColumn(name = "index", nullable = false)
+  @ListIndexBase(1)
   private List<Channel> channels;
 
 }

@@ -111,6 +111,9 @@
         <constraints primaryKey="true" primaryKeyName="result_channel_pk" foreignKeyName="result_channel_channel_fk"
                      referencedTableName="channel" referencedColumnNames="id"/>
       </column>
+      <column name="index" type="${integer}">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
 
     <rollback>

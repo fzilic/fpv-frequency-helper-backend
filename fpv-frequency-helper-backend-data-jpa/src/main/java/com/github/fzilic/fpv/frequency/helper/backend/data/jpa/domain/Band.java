@@ -33,7 +33,7 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"channels"})
-@ToString(exclude = {"channels"})
+@ToString(includeFieldNames = false, exclude = {"channels", "id", "version", "description", "preselected"})
 @Builder
 @Entity
 @Table(name = "band")

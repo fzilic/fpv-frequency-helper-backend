@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ColumnDefault;
@@ -30,6 +31,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(includeFieldNames = false, exclude = {"id", "version"})
 @Builder
 @Entity
 @Table(name = "channel")
