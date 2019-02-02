@@ -4,12 +4,11 @@ public abstract class QueryUtil {
 
   private static String QUERY_2 = "SELECT r " +
       "FROM Result r " +
-      "JOIN FETCH r.channels c " +
       "WHERE r.numberOfChannels = :numberOfChannels " +
       "AND r.minimumSeparationChannel >= :minimumSeparationChannel " +
       "AND r.minimumSeparationImd >= :minimumSeparationImd " +
       "AND EXISTS (" +
-      "  SELECT r0.id = r.id" +
+      "  SELECT c0.id " +
       "  FROM Result r0 " +
       "  INNER JOIN r0.channels c0 " +
       "  WHERE c0.id IN :p0 " +
@@ -30,7 +29,6 @@ public abstract class QueryUtil {
 
   private static String QUERY_3 = "SELECT r " +
       "FROM Result r " +
-      "JOIN FETCH r.channels c " +
       "WHERE r.numberOfChannels = :numberOfChannels " +
       "AND r.minimumSeparationChannel >= :minimumSeparationChannel " +
       "AND r.minimumSeparationImd >= :minimumSeparationImd " +
@@ -66,7 +64,6 @@ public abstract class QueryUtil {
 
   private static String QUERY_4 = "SELECT r " +
       "FROM Result r " +
-      "JOIN FETCH r.channels c " +
       "WHERE r.numberOfChannels = :numberOfChannels " +
       "AND r.minimumSeparationChannel >= :minimumSeparationChannel " +
       "AND r.minimumSeparationImd >= :minimumSeparationImd " +
@@ -113,7 +110,6 @@ public abstract class QueryUtil {
 
   private static String QUERY_5 = "SELECT r " +
       "FROM Result r " +
-      "JOIN FETCH r.channels c " +
       "WHERE r.numberOfChannels = :numberOfChannels " +
       "AND r.minimumSeparationChannel >= :minimumSeparationChannel " +
       "AND r.minimumSeparationImd >= :minimumSeparationImd " +
@@ -172,7 +168,6 @@ public abstract class QueryUtil {
 
   private static String QUERY_6 = "SELECT r " +
       "FROM Result r " +
-      "JOIN FETCH r.channels c " +
       "WHERE r.numberOfChannels = :numberOfChannels " +
       "AND r.minimumSeparationChannel >= :minimumSeparationChannel " +
       "AND r.minimumSeparationImd >= :minimumSeparationImd " +

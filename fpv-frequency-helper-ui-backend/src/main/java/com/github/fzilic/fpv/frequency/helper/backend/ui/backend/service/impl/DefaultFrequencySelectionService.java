@@ -164,8 +164,16 @@ public class DefaultFrequencySelectionService implements FrequencySelectionServi
                 .noneMatch(pilot ->
                     pilot.getRecommendedChannel() == null
                         && pilot.getAvailableChannels().size() != distinct.size())) {
-              pilotsForRecommendation.get(0).setRecommendedChannel(pilotsForRecommendation.get(0).getAvailableChannels().get(0));
-              recommendations.removeIf(recommendation -> recommendation.getId().equals(pilotsForRecommendation.get(0).getRecommendedChannel().getId()));
+
+              pilotsForRecommendation.stream()
+                  .filter(pilot ->
+                      pilot.getRecommendedChannel() == null)
+                  .findAny()
+                  .ifPresent(pilot -> {
+
+                    pilot.setRecommendedChannel(pilot.getAvailableChannels().get(0));
+                    recommendations.removeIf(recommendation -> recommendation.getId().equals(pilot.getRecommendedChannel().getId()));
+                  });
             }
             else {
 

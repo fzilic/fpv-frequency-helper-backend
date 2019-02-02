@@ -29,6 +29,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.ListIndexBase;
 
 @Data
@@ -80,6 +82,7 @@ public class Result {
   @JsonView({Basic.class})
   private Double averageSeparationImd;
 
+  @Fetch(FetchMode.SELECT)
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
   @JoinTable(name = "result_channel",
       joinColumns = @JoinColumn(name = "result_id"),
