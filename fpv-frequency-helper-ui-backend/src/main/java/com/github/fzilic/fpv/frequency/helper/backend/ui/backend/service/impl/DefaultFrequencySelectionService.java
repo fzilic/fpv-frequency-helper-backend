@@ -174,22 +174,29 @@ public class DefaultFrequencySelectionService implements FrequencySelectionServi
                       pilot.getRecommendedChannel() == null
                           && pilot.getAvailableChannels().size() == distinct.size())
                   .findAny()
-                  .ifPresent(pilot ->
-                      pilot.getAvailableChannels().stream()
-                          .filter(available ->
-                              pilotsForRecommendation.stream()
-                                  .filter(other ->
-                                      other.getRecommendedChannel() == null
-                                          && other.getAvailableChannels().size() != distinct.size())
-                                  .map(Pilot::getAvailableChannels)
-                                  .flatMap(Collection::stream)
-                                  .distinct()
-                                  .noneMatch(other -> other.getId().equals(available.getId())))
-                          .findAny().ifPresent(channel -> {
-                        pilot.setRecommendedChannel(channel);
-                        recommendations.removeIf(recommendation ->
-                            recommendation.getId().equals(channel.getId()));
-                      }));
+                  .ifPresent(pilot -> {
+                    pilot.getAvailableChannels().stream()
+                        .filter(available ->
+                            pilotsForRecommendation.stream()
+                                .filter(other ->
+                                    other.getRecommendedChannel() == null
+                                        && other.getAvailableChannels().size() != distinct.size())
+                                .map(Pilot::getAvailableChannels)
+                                .flatMap(Collection::stream)
+                                .distinct()
+                                .noneMatch(other -> other.getId().equals(available.getId())))
+                        .findAny()
+                        .ifPresent(channel -> {
+                          pilot.setRecommendedChannel(channel);
+                          recommendations.removeIf(recommendation ->
+                              recommendation.getId().equals(channel.getId()));
+                        });
+
+                    if (pilot.getRecommendedChannel() == null) {
+                      pilot.setRecommendedChannel(pilot.getAvailableChannels().get(0));
+                      recommendations.removeIf(recommendation -> recommendation.getId().equals(pilot.getRecommendedChannel().getId()));
+                    }
+                  });
             }
 
             limit--;
