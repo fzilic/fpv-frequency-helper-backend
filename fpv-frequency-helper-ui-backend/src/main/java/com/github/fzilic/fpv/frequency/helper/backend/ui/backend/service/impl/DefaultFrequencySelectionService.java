@@ -2,12 +2,11 @@ package com.github.fzilic.fpv.frequency.helper.backend.ui.backend.service.impl;
 
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Channel;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Result;
-import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.repository.ResultRepository;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.common.Pilot;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.common.RecommendationResult;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.exception.ConflictingPilotsException;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.service.FrequencySelectionService;
-import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.util.QueryUtil;
+import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.service.ResultService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -16,27 +15,23 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 @Slf4j
 @Service
 public class DefaultFrequencySelectionService implements FrequencySelectionService {
 
-  private final ResultRepository resultRepository;
-
-  private final EntityManager entityManager;
+  private final ResultService resultService;
 
   @Autowired
-  public DefaultFrequencySelectionService(final ResultRepository resultRepository, final EntityManager entityManager) {
-    this.resultRepository = resultRepository;
-    this.entityManager = entityManager;
+  public DefaultFrequencySelectionService(final ResultService resultService) {
+    this.resultService = resultService;
   }
 
   @SuppressWarnings("Duplicates")
@@ -77,37 +72,13 @@ public class DefaultFrequencySelectionService implements FrequencySelectionServi
             }
           });
 
-      if (conflictingPilots.size() > 0) {
+      if (!CollectionUtils.isEmpty(conflictingPilots)) {
         log.warn("Conflicting single channel pilots {}", conflictingPilots);
         throw new ConflictingPilotsException(conflictingPilots);
       }
     }
 
-    final TypedQuery<Result> query = entityManager.createQuery(QueryUtil.query(pilots.size())
-        , Result.class)
-        .setParameter("numberOfChannels", pilots.size())
-        .setParameter("minimumSeparationChannel", minimumSeparation)
-        .setParameter("minimumSeparationImd", minimumSeparation)
-        .setParameter("p0", pilots.get(0).getAvailableChannels().stream().map(Channel::getId).collect(Collectors.toList()))
-        .setParameter("p1", pilots.get(1).getAvailableChannels().stream().map(Channel::getId).collect(Collectors.toList()));
-
-    if (pilots.size() >= 3) {
-      query.setParameter("p2", pilots.get(2).getAvailableChannels().stream().map(Channel::getId).collect(Collectors.toList()));
-    }
-    if (pilots.size() >= 4) {
-      query.setParameter("p3", pilots.get(3).getAvailableChannels().stream().map(Channel::getId).collect(Collectors.toList()));
-    }
-    if (pilots.size() >= 5) {
-      query.setParameter("p4", pilots.get(4).getAvailableChannels().stream().map(Channel::getId).collect(Collectors.toList()));
-    }
-    if (pilots.size() == 6) {
-      query.setParameter("p5", pilots.get(5).getAvailableChannels().stream().map(Channel::getId).collect(Collectors.toList()));
-    }
-
-    final List<Result> found = query
-        .setHint("org.hibernate.cacheable", true)
-        .setMaxResults(50)
-        .getResultList();
+    final List<Result> found = resultService.query(minimumSeparation, 50, pilots);
 
 
     return found.stream()

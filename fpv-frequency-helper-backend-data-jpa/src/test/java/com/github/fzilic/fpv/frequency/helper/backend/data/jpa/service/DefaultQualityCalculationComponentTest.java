@@ -1,7 +1,8 @@
-package com.github.fzilic.fpv.frequency.helper.backend.generator.service;
+package com.github.fzilic.fpv.frequency.helper.backend.data.jpa.service;
 
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Channel;
-import com.github.fzilic.fpv.frequency.helper.backend.generator.data.QualityResult;
+import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.data.QualityResult;
+import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.service.impl.DefaultQualityCalculationComponent;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.concurrent.ListenableFuture;

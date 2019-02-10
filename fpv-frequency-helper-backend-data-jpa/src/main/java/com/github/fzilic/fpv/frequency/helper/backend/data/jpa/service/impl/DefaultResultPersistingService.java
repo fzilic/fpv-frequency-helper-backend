@@ -1,9 +1,10 @@
-package com.github.fzilic.fpv.frequency.helper.backend.generator.service;
+package com.github.fzilic.fpv.frequency.helper.backend.data.jpa.service.impl;
 
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Channel;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Result;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.repository.ChannelRepository;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.repository.ResultRepository;
+import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.service.ResultPersistingService;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;

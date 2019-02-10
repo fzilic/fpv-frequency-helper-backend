@@ -1,4 +1,4 @@
-package com.github.fzilic.fpv.frequency.helper.backend.generator.data;
+package com.github.fzilic.fpv.frequency.helper.backend.data.jpa.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

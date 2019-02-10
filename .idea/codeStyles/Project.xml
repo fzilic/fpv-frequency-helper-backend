@@ -7,20 +7,6 @@
         <option name="TAB_SIZE" value="2" />
       </value>
     </option>
-    <option name="GENERATE_FINAL_PARAMETERS" value="true" />
-    <option name="INSERT_INNER_CLASS_IMPORTS" value="true" />
-    <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="5000" />
-    <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="5000" />
-    <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
-      <value />
-    </option>
-    <option name="IMPORT_LAYOUT_TABLE">
-      <value>
-        <package name="" withSubpackages="true" static="false" />
-        <emptyLine />
-        <package name="" withSubpackages="true" static="true" />
-      </value>
-    </option>
     <option name="RIGHT_MARGIN" value="200" />
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
     <option name="FORMATTER_TAGS_ENABLED" value="true" />
@@ -32,6 +18,7 @@
       <option name="SPACE_BEFORE_FUNCTION_LEFT_PARENTH" value="false" />
     </JSCodeStyleSettings>
     <JavaCodeStyleSettings>
+      <option name="GENERATE_FINAL_LOCALS" value="true" />
       <option name="GENERATE_FINAL_PARAMETERS" value="true" />
       <option name="INSERT_INNER_CLASS_IMPORTS" value="true" />
       <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="5000" />
@@ -47,6 +34,34 @@
         </value>
       </option>
     </JavaCodeStyleSettings>
+    <Properties>
+      <option name="KEEP_BLANK_LINES" value="true" />
+    </Properties>
+    <SqlCodeStyleSettings version="1">
+      <option name="myVersion" value="1" />
+      <option name="ALIAS_CASE" value="1" />
+      <option name="KEYWORD_CASE" value="0" />
+      <option name="TYPE_CASE" value="0" />
+      <option name="IDENTIFIER_CASE" value="1" />
+      <option name="QUERY_EL_LINE" value="101" />
+      <option name="SET_EL_COMMA" value="1" />
+      <option name="WITH_EL_COMMA" value="1" />
+      <option name="SELECT_EL_COMMA" value="1" />
+      <option name="FROM_ALIGN_ALIASES" value="true" />
+      <option name="ORDER_EL_COMMA" value="1" />
+      <option name="ORDER_ALIGN_ASC_DESC" value="true" />
+      <option name="TABLE_OPENING" value="1" />
+      <option name="TABLE_CONTENT" value="2" />
+      <option name="TABLE_CLOSING" value="3" />
+      <option name="POST_OPT_WRAP_1" value="true" />
+      <option name="IMP_DECLARE_EL_WRAP" value="1" />
+      <option name="IMP_IF_THEN_WRAP_THEN" value="true" />
+      <option name="CORTEGE_COMMA_1ST" value="true" />
+      <option name="EXPR_CASE_THEN_ALIGN" value="true" />
+      <option name="EXPR_CASE_ELSE_ALIGN_THEN" value="true" />
+      <option name="EXPR_CASE_END" value="1" />
+      <option name="INDEX_NAME_TEMPLATE" value="{table}_{columns}_{unique?u:}_i" />
+    </SqlCodeStyleSettings>
     <XML>
       <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
     </XML>
@@ -108,6 +123,7 @@
       <option name="BINARY_OPERATION_WRAP" value="1" />
       <option name="TERNARY_OPERATION_WRAP" value="1" />
       <option name="TERNARY_OPERATION_SIGNS_ON_NEXT_LINE" value="true" />
+      <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true" />
       <option name="FOR_STATEMENT_WRAP" value="1" />
       <option name="ARRAY_INITIALIZER_WRAP" value="1" />
       <option name="ASSIGNMENT_WRAP" value="1" />
@@ -117,6 +133,7 @@
       <option name="DOWHILE_BRACE_FORCE" value="3" />
       <option name="WHILE_BRACE_FORCE" value="3" />
       <option name="FOR_BRACE_FORCE" value="3" />
+      <option name="VARIABLE_ANNOTATION_WRAP" value="2" />
       <option name="ENUM_CONSTANTS_WRAP" value="1" />
       <indentOptions>
         <option name="INDENT_SIZE" value="2" />
@@ -133,10 +150,6 @@
           <group>
             <type>OVERRIDDEN_METHODS</type>
             <order>KEEP</order>
-          </group>
-          <group>
-            <type>DEPENDENT_METHODS</type>
-            <order>BREADTH_FIRST</order>
           </group>
         </groups>
         <rules>
@@ -273,33 +286,6 @@
           <section>
             <rule>
               <match>
-                <INTERFACE>true</INTERFACE>
-              </match>
-              <order>BY_NAME</order>
-            </rule>
-          </section>
-          <section>
-            <rule>
-              <match>
-                <AND>
-                  <CLASS>true</CLASS>
-                  <STATIC>true</STATIC>
-                </AND>
-              </match>
-              <order>BY_NAME</order>
-            </rule>
-          </section>
-          <section>
-            <rule>
-              <match>
-                <CLASS>true</CLASS>
-              </match>
-              <order>BY_NAME</order>
-            </rule>
-          </section>
-          <section>
-            <rule>
-              <match>
                 <AND>
                   <FIELD>true</FIELD>
                   <FINAL>true</FINAL>
@@ -396,7 +382,6 @@
                   <STATIC>true</STATIC>
                 </AND>
               </match>
-              <order>BY_NAME</order>
             </rule>
           </section>
           <section>
@@ -412,7 +397,30 @@
               <match>
                 <METHOD>true</METHOD>
               </match>
-              <order>BY_NAME</order>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <INTERFACE>true</INTERFACE>
+              </match>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <CLASS>true</CLASS>
+                  <STATIC>true</STATIC>
+                </AND>
+              </match>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <CLASS>true</CLASS>
+              </match>
             </rule>
           </section>
         </rules>

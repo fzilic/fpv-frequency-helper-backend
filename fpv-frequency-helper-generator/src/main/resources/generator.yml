@@ -5,7 +5,7 @@ logging.level:
   liquibase.executor: warn
   net.jperf.TimingLogger: info
   com.github.fzilic.fpv.frequency.helper.backend: info
-  #com.github.fzilic.fpv.frequency.helper.backend.generator.service.DefaultQualityCalculationComponent: debug
+  #com.github.fzilic.fpv.frequency.helper.backend.data.jpa.service.impl.DefaultQualityCalculationComponent: debug
   #org.hibernate.SQL: debug
 
 spring.liquibase.change-log: classpath:/liquibase.xml
