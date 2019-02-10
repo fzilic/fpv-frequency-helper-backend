@@ -2,6 +2,7 @@ package com.github.fzilic.fpv.frequency.helper.backend.data.jpa.service.impl;
 
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Channel;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Result;
+import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.ResultChannel;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.repository.ChannelRepository;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.service.GeneratorService;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.service.QualityCalculationComponent;
@@ -112,6 +113,7 @@ public class DefaultGeneratorService implements GeneratorService {
           if (quality != null
               && quality.getMinimumSeparationChannel() > minFrequencySeparation
               && quality.getMinimumSeparationImd() > minFrequencySeparation) {
+
             final Result result = Result.builder()
                 .numberOfChannels(candidate.size())
                 .frequencies(candidate.stream().map(Channel::getFrequency).map(Object::toString).collect(Collectors.joining(",")))
@@ -119,8 +121,22 @@ public class DefaultGeneratorService implements GeneratorService {
                 .averageSeparationChannel(quality.getAverageSeparationChannel())
                 .minimumSeparationImd(quality.getMinimumSeparationImd())
                 .averageSeparationImd(quality.getAverageSeparationImd())
-                .channels(candidate)
                 .build();
+
+            result.setChannels(candidate.stream()
+                .map(channel ->
+                    ResultChannel.builder()
+                        .result(result)
+                        .channel(channel)
+                        .minSeparationOtherChannels(candidate.stream()
+                            .filter(c ->
+                                !channel.getId().equals(c.getId()))
+                            .mapToInt(c ->
+                                Math.abs(c.getFrequency() - channel.getFrequency()))
+                            .min()
+                            .orElse(0))
+                        .build())
+                .collect(Collectors.toList()));
 
             results.add(result);
           }

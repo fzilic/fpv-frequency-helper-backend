@@ -3,20 +3,15 @@ package com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Validations.Common;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.Basic;
-import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Views.ChannelView;
 import java.util.List;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OrderColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -31,7 +26,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.ListIndexBase;
 
 @Data
 @NoArgsConstructor
@@ -83,16 +77,8 @@ public class Result {
   private Double averageSeparationImd;
 
   @Fetch(FetchMode.SELECT)
-  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-  @JoinTable(name = "result_channel",
-      joinColumns = @JoinColumn(name = "result_id"),
-      foreignKey = @ForeignKey(name = "result_channel_result_fk"),
-      inverseJoinColumns = @JoinColumn(name = "channel_id"),
-      inverseForeignKey = @ForeignKey(name = "result_channel_channel_fk"))
-  @JsonView({ChannelView.class})
-  @OrderColumn(name = "index", nullable = false)
-  @ListIndexBase(1)
+  @OneToMany(mappedBy = "result", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
   @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "Result_L2.channels")
-  private List<Channel> channels;
+  private List<ResultChannel> channels;
 
 }

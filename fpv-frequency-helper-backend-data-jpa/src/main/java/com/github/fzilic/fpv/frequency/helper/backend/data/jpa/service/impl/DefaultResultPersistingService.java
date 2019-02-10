@@ -2,6 +2,7 @@ package com.github.fzilic.fpv.frequency.helper.backend.data.jpa.service.impl;
 
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Channel;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Result;
+import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.ResultChannel;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.repository.ChannelRepository;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.repository.ResultRepository;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.service.ResultPersistingService;
@@ -39,30 +40,31 @@ public class DefaultResultPersistingService implements ResultPersistingService {
   }
 
   @Override
+  public Set<String> findDistinctFrequencies() {
+    return resultRepository.findDistinctFrequencies();
+  }
+
+  @Override
   @Transactional
   public void saveAll(final List<Result> results) {
     final List<Channel> channels = channelRepository.findAllById(results.stream()
         .map(Result::getChannels)
         .flatMap(Collection::stream)
+        .map(ResultChannel::getChannel)
         .map(Channel::getId)
         .distinct()
         .collect(Collectors.toList()));
 
     results.forEach(result ->
         result.setChannels(result.getChannels().stream()
-            .map(channel ->
-                channels.stream()
+            .peek(channel ->
+                channel.setChannel(channels.stream()
                     .filter(loaded ->
-                        loaded.getId().equals(channel.getId()))
+                        loaded.getId().equals(channel.getChannel().getId()))
                     .findAny().
-                    orElseThrow(IllegalStateException::new))
+                        orElseThrow(IllegalStateException::new)))
             .collect(Collectors.toList())));
 
     resultRepository.saveAll(results);
-  }
-
-  @Override
-  public Set<String> findDistinctFrequencies() {
-    return resultRepository.findDistinctFrequencies();
   }
 }

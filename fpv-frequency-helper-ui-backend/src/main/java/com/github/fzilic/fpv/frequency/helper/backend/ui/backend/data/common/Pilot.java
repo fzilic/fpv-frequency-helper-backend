@@ -1,6 +1,5 @@
 package com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.common;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Validations.Common;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.Validations.SelectionRequest;
@@ -34,8 +33,13 @@ public class Pilot {
   @JsonView(Basic.class)
   private Channel recommendedChannel;
 
-  @JsonIgnore
   @JsonView(Basic.class)
   private Integer ordinal;
+
+  @JsonView(Basic.class)
+  private Boolean preferMaximumSeparationFromOthers;
+
+  @JsonView(Basic.class)
+  private Integer minimumSeparationFromOthers;
 
 }

@@ -3,6 +3,7 @@ package com.github.fzilic.fpv.frequency.helper.backend.data.jpa.repository;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.DataConfiguration;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Channel;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Result;
+import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.ResultChannel;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -49,6 +50,25 @@ class ResultRepositoryTest {
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
+  private Result build(final Channel[] channels) {
+    final Result result = Result.builder()
+        .numberOfChannels(channels.length)
+        .frequencies(frequencies(channels))
+        .minimumSeparationChannel(0)
+        .averageSeparationChannel(0.0)
+        .minimumSeparationImd(0)
+        .averageSeparationImd(0.0)
+        .build();
+
+    result.setChannels(Arrays.stream(channels).map(channel -> ResultChannel.builder()
+        .result(result)
+        .channel(channel)
+        .minSeparationOtherChannels(0)
+        .build()).collect(Collectors.toList()));
+
+    return result;
+  }
+
   @Test
   @Transactional
   void shouldCheckIfExists() {
@@ -59,33 +79,9 @@ class ResultRepositoryTest {
     final Channel[] third = {preselected.get(3), preselected.get(4)};
 
     resultRepository.saveAll(Arrays.asList(
-        Result.builder()
-            .numberOfChannels(3)
-            .frequencies(frequencies(first))
-            .minimumSeparationChannel(0)
-            .averageSeparationChannel(0.0)
-            .minimumSeparationImd(0)
-            .averageSeparationImd(0.0)
-            .channels(Arrays.asList(first))
-            .build(),
-        Result.builder()
-            .numberOfChannels(3)
-            .frequencies(frequencies(second))
-            .minimumSeparationChannel(0)
-            .averageSeparationChannel(0.0)
-            .minimumSeparationImd(0)
-            .averageSeparationImd(0.0)
-            .channels(Arrays.asList(second))
-            .build(),
-        Result.builder()
-            .numberOfChannels(2)
-            .frequencies(frequencies(third))
-            .minimumSeparationChannel(0)
-            .averageSeparationChannel(0.0)
-            .minimumSeparationImd(0)
-            .averageSeparationImd(0.0)
-            .channels(Arrays.asList(third))
-            .build()));
+        build(first),
+        build(second),
+        build(third)));
 
     entityManager.flush();
 
@@ -113,15 +109,7 @@ class ResultRepositoryTest {
 
     final Channel[] channels = {preselected.get(5), preselected.get(7), preselected.get(10)};
 
-    final Result saved = resultRepository.save(Result.builder()
-        .numberOfChannels(3)
-        .frequencies(frequencies(channels))
-        .minimumSeparationChannel(0)
-        .averageSeparationChannel(0.0)
-        .minimumSeparationImd(0)
-        .averageSeparationImd(0.0)
-        .channels(Arrays.asList(channels))
-        .build());
+    final Result saved = resultRepository.save(build(channels));
 
     entityManager.flush();
 

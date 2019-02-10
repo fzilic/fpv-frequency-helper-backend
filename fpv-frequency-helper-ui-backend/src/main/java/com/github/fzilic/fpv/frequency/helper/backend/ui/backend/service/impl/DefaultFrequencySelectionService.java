@@ -2,6 +2,7 @@ package com.github.fzilic.fpv.frequency.helper.backend.ui.backend.service.impl;
 
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Channel;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Result;
+import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.ResultChannel;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.common.Pilot;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.common.RecommendationResult;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.exception.ConflictingPilotsException;
@@ -78,17 +79,18 @@ public class DefaultFrequencySelectionService implements FrequencySelectionServi
       }
     }
 
-    final List<Result> found = resultService.query(minimumSeparation, 50, pilots);
+    final List<Result> found = resultService.query(minimumSeparation, pilots.stream().anyMatch(Pilot::getPreferMaximumSeparationFromOthers) ? null : 50, pilots);
 
 
-    return found.stream()
+    final List<RecommendationResult> recommendationResults = found.stream()
         .map(result -> {
-          final List<Channel> recommendations = new ArrayList<>(result.getChannels());
+          final List<Channel> recommendations = new ArrayList<>(result.getChannels().stream().map(ResultChannel::getChannel).collect(Collectors.toList()));
 
           final List<Pilot> pilotsForRecommendation = pilots.stream()
               .map(pilot -> Pilot.builder()
                   .nickname(pilot.getNickname())
                   .ordinal(pilot.getOrdinal())
+                  .preferMaximumSeparationFromOthers(pilot.getPreferMaximumSeparationFromOthers())
                   .availableChannels(pilot.getAvailableChannels().stream()
                       .filter(channel ->
                           recommendations.stream()
@@ -189,12 +191,38 @@ public class DefaultFrequencySelectionService implements FrequencySelectionServi
 
           return RecommendationResult.builder()
               .result(result)
-              .pilots(pilotsForRecommendation)
+              .pilots(pilotsForRecommendation.stream().peek(pilot ->
+                  pilot.setMinimumSeparationFromOthers(
+                      result.getChannels().stream().filter(rc ->
+                          rc.getChannel().getId().equals(pilot.getRecommendedChannel().getId()))
+                          .findAny()
+                          .map(ResultChannel::getMinSeparationOtherChannels)
+                          .orElse(0))).collect(Collectors.toList()))
               .build();
         })
         .filter(recommendationResult -> recommendationResult.getPilots().stream()
             .noneMatch(pilot -> pilot.getRecommendedChannel() == null))
         .collect(Collectors.toList());
+
+    if (pilots.stream().anyMatch(Pilot::getPreferMaximumSeparationFromOthers)) {
+      return recommendationResults.stream()
+          .sorted(Comparator.comparingInt(this::minSeparationOthers).reversed()
+              .thenComparing(r -> r.getResult().getAverageSeparationImd()).reversed()
+              .thenComparing(r -> r.getResult().getMinimumSeparationChannel()).reversed())
+          .limit(50)
+          .collect(Collectors.toList());
+    }
+    else {
+      return recommendationResults;
+    }
+  }
+
+  private Integer minSeparationOthers(final RecommendationResult recommendationResult) {
+    return recommendationResult.getPilots().stream()
+        .filter(Pilot::getPreferMaximumSeparationFromOthers)
+        .findAny()
+        .map(Pilot::getMinimumSeparationFromOthers)
+        .orElse(0);
   }
 
 }

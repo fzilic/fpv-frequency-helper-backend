@@ -3,6 +3,8 @@ package com.github.fzilic.fpv.frequency.helper.backend.ui.backend.service.impl;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Channel;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Channel_;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Result;
+import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.ResultChannel;
+import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.ResultChannel_;
 import com.github.fzilic.fpv.frequency.helper.backend.data.jpa.domain.Result_;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.data.common.Pilot;
 import com.github.fzilic.fpv.frequency.helper.backend.ui.backend.service.ResultService;
@@ -12,6 +14,7 @@ import java.util.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -45,13 +48,23 @@ public class DefaultResultService implements ResultService {
         builder.ge(from.get(Result_.minimumSeparationImd), minimumSeparation),
         builder.exists(buildSubQuery(builder, query, from, null, null, pilots.size(), new LinkedList<>(pilots))));
 
-    query.orderBy(builder.desc(from.get(Result_.minimumSeparationImd)),
-        builder.desc(from.get(Result_.minimumSeparationChannel)));
+    if (maxResults != null) {
+      query.orderBy(builder.desc(from.get(Result_.minimumSeparationImd)),
+          builder.desc(from.get(Result_.minimumSeparationChannel)));
+    }
 
-    return entityManager.createQuery(query)
-        .setMaxResults(maxResults)
-        .setHint("org.hibernate.cacheable", true)
-        .getResultList();
+    if (maxResults == null) {
+      return entityManager.createQuery(query)
+          .setHint("org.hibernate.cacheable", true)
+          .getResultList();
+
+    }
+    else {
+      return entityManager.createQuery(query)
+          .setMaxResults(maxResults)
+          .setHint("org.hibernate.cacheable", true)
+          .getResultList();
+    }
   }
 
 
@@ -71,9 +84,10 @@ public class DefaultResultService implements ResultService {
     }
 
     final Root<Result> root = current.from(Result.class);
-    final ListJoin<Result, Channel> join = root.join(Result_.channels);
-    final Path<Integer> integerPath = join.get(Channel_.id);
-    current.select(join.get(Channel_.id));
+    final ListJoin<Result, ResultChannel> join = root.join(Result_.channels);
+    final Join<ResultChannel, Channel> joinChannel = join.join(ResultChannel_.channel);
+    final Path<Integer> integerPath = joinChannel.get(Channel_.id);
+    current.select(joinChannel.get(Channel_.id));
 
     final Pilot pilot = pilots.poll();
 
@@ -85,7 +99,7 @@ public class DefaultResultService implements ResultService {
 
     Predicate predicate = builder.and(
         builder.equal(root.get(Result_.numberOfChannels), numberOfChannels),
-        join.in(pilot.getAvailableChannels()),
+        joinChannel.in(pilot.getAvailableChannels()),
         builder.equal(queryRoot.get(Result_.id), root.get(Result_.id)));
 
     if (previous != null) {

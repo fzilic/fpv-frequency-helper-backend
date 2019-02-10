@@ -102,24 +102,33 @@
       </column>
     </createTable>
 
+    <createSequence sequenceName="result_channel_seq" incrementBy="500"/>
+
     <createTable tableName="result_channel">
+      <column name="id" type="${integer}">
+        <constraints primaryKey="true" primaryKeyName="result_channel_pk"/>
+      </column>
+      <column name="version" type="${integer}" defaultValueNumeric="0">
+        <constraints nullable="false"/>
+      </column>
+
+
       <column name="result_id" type="${integer}">
-        <constraints primaryKey="true" primaryKeyName="result_channel_pk" foreignKeyName="result_channel_result_fk"
+        <constraints foreignKeyName="result_channel_result_fk"
                      referencedTableName="result" referencedColumnNames="id"/>
       </column>
       <column name="channel_id" type="${integer}">
-        <constraints primaryKey="true" primaryKeyName="result_channel_pk" foreignKeyName="result_channel_channel_fk"
+        <constraints foreignKeyName="result_channel_channel_fk"
                      referencedTableName="channel" referencedColumnNames="id"/>
       </column>
-      <column name="index" type="${integer}">
-        <constraints nullable="false"/>
-      </column>
+      <column name="avg_separation_imd" type="${integer}"/>
     </createTable>
 
     <rollback>
       <dropTable tableName="result_channel"/>
       <dropTable tableName="result"/>
       <dropSequence sequenceName="result_seq"/>
+      <dropSequence sequenceName="result_channel_seq"/>
     </rollback>
   </changeSet>
 
